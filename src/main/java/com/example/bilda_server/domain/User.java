@@ -27,6 +27,6 @@ public class User {
 
     //private Page myPage;
 
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "users")
     private List<Team> teams;
 }

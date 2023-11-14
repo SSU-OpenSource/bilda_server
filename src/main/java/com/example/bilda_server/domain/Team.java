@@ -19,7 +19,12 @@ public class Team {
     private User leader;
 
     @ManyToMany
-    private List<User> crew;
+    @JoinTable(
+            name = "user_team",
+            joinColumns = @JoinColumn(name="team_id"),
+            inverseJoinColumns = @JoinColumn(name="user_id")
+    )
+    private List<User> users;
 
     @ManyToOne
     private Subject subject;
