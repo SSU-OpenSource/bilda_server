@@ -2,16 +2,15 @@ package com.example.bilda_server.domain;
 
 public enum Department {
 
-    COM("컴퓨터학부"), SOFT("소프트학부"), ETC("기타");
+    COMPUTER("컴퓨터 학부"), SOFTWARE("소프트웨어 학부"), EXTRA("기타");
 
-    private final String description;
+    private final String department;
 
-    Department(String description)    {
-        this.description = description;
+    Department(String department) {
+        this.department = department;
     }
 
-    public String getDescription(){
-        return description;
+    public String getDescription() {
+        return department;
     }
-
 }
