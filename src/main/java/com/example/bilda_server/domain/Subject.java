@@ -7,17 +7,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Subject {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long subjectCode;
 
-    private Department department;
+    private String title;
+
+    @ElementCollection(targetClass = Department.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "subject_department", joinColumns = @JoinColumn(name = "subjectCode"))
+    @Column(name = "department")
+    private Set<Department> departments;
 
     private String professor;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private String section; //학기 정보
+
 }

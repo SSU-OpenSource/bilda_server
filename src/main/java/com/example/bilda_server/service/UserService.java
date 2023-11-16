@@ -1,5 +1,6 @@
 package com.example.bilda_server.service;
 
+<<<<<<< 5-feat-login-and-signup
 import com.example.bilda_server.domain.User;
 import com.example.bilda_server.repository.UserJpaRepository;
 import com.example.bilda_server.request.LogInRequest;
@@ -39,5 +40,16 @@ public class UserService {
         }
         return findUser;
     }
+=======
+import com.example.bilda_server.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+>>>>>>> main
 
 }
