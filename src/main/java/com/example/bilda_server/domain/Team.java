@@ -1,9 +1,7 @@
 package com.example.bilda_server.domain;
 
-import com.example.bilda_server.domain.CompleteStatus;
-import com.example.bilda_server.domain.RecruitmentStatus;
-import com.example.bilda_server.domain.Subject;
-import com.example.bilda_server.domain.User;
+import com.example.bilda_server.domain.enums.CompleteStatus;
+import com.example.bilda_server.domain.enums.RecruitmentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
