@@ -1,4 +1,4 @@
-package com.example.bilda_server.repository;
+package com.example.bilda_server.Repository;
 
 import com.example.bilda_server.domain.User;
 import java.util.List;

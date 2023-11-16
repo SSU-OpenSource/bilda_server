@@ -1,10 +1,8 @@
 package com.example.bilda_server.domain;
 
 import com.example.bilda_server.domain.enums.Department;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;

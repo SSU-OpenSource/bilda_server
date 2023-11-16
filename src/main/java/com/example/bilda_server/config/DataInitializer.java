@@ -1,8 +1,8 @@
 package com.example.bilda_server.config;
 
 import com.example.bilda_server.Repository.SubjectRepository;
-import com.example.bilda_server.domain.Department;
 import com.example.bilda_server.domain.Subject;
+import com.example.bilda_server.domain.enums.Department;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,8 +20,8 @@ public class DataInitializer {
     @PostConstruct
     public void initData(){
 
-        Set<Department> subject1Dept = new HashSet<>(Arrays.asList(Department.COM));
-        Set<Department> subject2Dept = new HashSet<>(Arrays.asList(Department.COM, Department.SOFT));
+        Set<Department> subject1Dept = new HashSet<>(Arrays.asList(Department.COMPUTER));
+        Set<Department> subject2Dept = new HashSet<>(Arrays.asList(Department.COMPUTER, Department.SOFTWARE));
 
         //과목 데이터 생성
         Subject subject1 = new Subject(101L, "사용자 인터페이스", subject1Dept, "최지웅", "2023 fall");
