@@ -1,29 +1,31 @@
 package com.example.bilda_server.domain;
 
+import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.request.UserSignUpRequest;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long userId;
     private String email;
     private String password;
+    private String name;
     private String nickname;
     private String studentId;
-
-
     @Enumerated(EnumType.STRING)
     private Department department;
 
@@ -36,11 +38,33 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Team> teams;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subject",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_code")
-    )
-    private Set<Subject> subjects = new HashSet<>();
+    @Builder
+    public User(Long userId, String email, String password, String nickname, String name,
+        String studentId,
+        Department department, Page myPage, List<Team> teams) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.studentId = studentId;
+        this.department = department;
+        this.myPage = myPage;
+        this.teams = teams;
+    }
+
+    public static User create(UserSignUpRequest request, PasswordEncoder passwordEncoder) {
+        return User.builder()
+            .email(request.email())
+            .password(passwordEncoder.encode(request.password()))
+            .name(request.name())
+            .studentId(request.studentId())
+            .nickname(request.nickname())
+            .department(request.department())
+            .build();
+    }
+
+    public boolean matchPassword(String password, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(this.password, password);
+    }
 }

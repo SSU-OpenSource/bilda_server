@@ -1,4 +1,4 @@
-package com.example.bilda_server.domain;
+package com.example.bilda_server.domain.enums;
 
 public enum CompleteStatus {
 
