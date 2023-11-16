@@ -22,7 +22,7 @@ public class Subject {
 
     @ElementCollection(targetClass = Department.class)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "subject_department", joinColumns = @JoinColumn(name = "subject_code"))
+    @CollectionTable(name = "subject_department", joinColumns = @JoinColumn(name = "subjectCode"))
     @Column(name = "department")
     private Set<Department> departments;
 
