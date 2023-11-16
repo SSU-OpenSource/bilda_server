@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -33,4 +35,12 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private List<Team> teams;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subject",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_code")
+    )
+    private Set<Subject> subjects = new HashSet<>();
 }
