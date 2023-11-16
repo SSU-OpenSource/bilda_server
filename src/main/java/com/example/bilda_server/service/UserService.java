@@ -2,6 +2,7 @@ package com.example.bilda_server.service;
 
 import com.example.bilda_server.domain.User;
 import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.request.LogInRequest;
 import com.example.bilda_server.request.UserSignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,4 +28,16 @@ public class UserService {
         userRepository.save(newUser);
         return newUser;
     }
+
+    public User logIn(LogInRequest request) {
+        User findUser = userRepository.findByEmail(request.email()).orElseThrow(
+            () -> new IllegalArgumentException("해당 이메일로 등록된 유저가 없습니다.")
+        );
+
+        if (!findUser.matchPassword(request.password(), passwordEncoder)) {
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+        }
+        return findUser;
+    }
+
 }

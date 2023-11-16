@@ -62,4 +62,8 @@ public class User {
             .department(request.department())
             .build();
     }
+
+    public boolean matchPassword(String password, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(this.password, password);
+    }
 }
