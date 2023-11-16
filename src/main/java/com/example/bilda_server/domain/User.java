@@ -1,5 +1,7 @@
 package com.example.bilda_server.domain;
 
+import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.request.UserSignUpRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,6 +22,7 @@ public class User {
     private Long userId;
     private String email;
     private String password;
+    private String name;
     private String nickname;
     private String studentId;
     @Enumerated(EnumType.STRING)
@@ -34,15 +38,28 @@ public class User {
     private List<Team> teams;
 
     @Builder
-    public User(Long userId, String email, String password, String nickname, String studentId,
+    public User(Long userId, String email, String password, String nickname, String name,
+        String studentId,
         Department department, Page myPage, List<Team> teams) {
         this.userId = userId;
         this.email = email;
         this.password = password;
+        this.name = name;
         this.nickname = nickname;
         this.studentId = studentId;
         this.department = department;
         this.myPage = myPage;
         this.teams = teams;
+    }
+
+    public static User create(UserSignUpRequest request, PasswordEncoder passwordEncoder) {
+        return User.builder()
+            .email(request.email())
+            .password(passwordEncoder.encode(request.password()))
+            .name(request.name())
+            .studentId(request.studentId())
+            .nickname(request.nickname())
+            .department(request.department())
+            .build();
     }
 }
