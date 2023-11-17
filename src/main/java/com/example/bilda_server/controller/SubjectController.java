@@ -5,6 +5,7 @@ import com.example.bilda_server.domain.Subject;
 import com.example.bilda_server.domain.User;
 import com.example.bilda_server.domain.enums.Department;
 import com.example.bilda_server.service.SubjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,12 +16,11 @@ import java.util.List;
 import static com.example.bilda_server.utils.RequestURI.SUBJECT_REQUEST_PREFIX;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(SUBJECT_REQUEST_PREFIX)
 public class SubjectController {
 
-    @Autowired
-    private SubjectService subjectService;
-
+    private final SubjectService subjectService;
 
     @GetMapping("/{userId}")
     @ResponseBody
