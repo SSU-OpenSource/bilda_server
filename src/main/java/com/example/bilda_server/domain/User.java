@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
@@ -38,10 +40,18 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Team> teams;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_subject",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_code")
+    )
+    private Set<Subject> subjects = new HashSet<>();
+
     @Builder
     public User(Long userId, String email, String password, String nickname, String name,
         String studentId,
-        Department department, Page myPage, List<Team> teams) {
+        Department department, Page myPage, List<Team> teams, Set<Subject> subjects) {
         this.userId = userId;
         this.email = email;
         this.password = password;
@@ -51,6 +61,7 @@ public class User {
         this.department = department;
         this.myPage = myPage;
         this.teams = teams;
+        this.subjects = subjects;
     }
 
     public static User create(UserSignUpRequest request, PasswordEncoder passwordEncoder) {
