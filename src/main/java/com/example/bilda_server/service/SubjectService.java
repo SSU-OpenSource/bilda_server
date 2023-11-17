@@ -24,7 +24,11 @@ public class SubjectService {
     @Autowired
     private UserJpaRepository userRepository;
 
-    public List<Subject> findSubjectsByDepartment(Department department) {
+    public List<Subject> findSubjectsByUserDepartment(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Department department = user.getDepartment();
         return subjectRepository.findByDepartmentsContaining(department);
     }
 

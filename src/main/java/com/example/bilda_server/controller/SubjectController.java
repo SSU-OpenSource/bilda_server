@@ -22,10 +22,10 @@ public class SubjectController {
     private SubjectService subjectService;
 
 
-    @GetMapping("/{department}")
+    @GetMapping("/{userId}")
     @ResponseBody
-    public ResponseEntity<List<Subject>> getSubjectsByDepartment(@PathVariable Department department) {
-        List<Subject> subjects = subjectService.findSubjectsByDepartment(department);
+    public ResponseEntity<List<Subject>> getSubjectsByDepartment(@PathVariable Long userId) {
+        List<Subject> subjects = subjectService.findSubjectsByUserDepartment(userId);
         return ResponseEntity.ok(subjects);
     }
 
