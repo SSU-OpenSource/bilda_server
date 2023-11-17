@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository {
 
-    Optional<User> findById(Long id);
+    //JpaRepository 에서 제공하는 findById와 충돌
+    //Optional<User> findById(Long id);
 
     Optional<User> findByEmail(String email);
 
