@@ -14,15 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class SubjectService {
 
-    @Autowired
-    private SubjectRepository subjectRepository;
-
-    @Autowired
-    private UserJpaRepository userRepository;
+    private final SubjectRepository subjectRepository;
+    private final UserJpaRepository userRepository;
 
     public List<Subject> findSubjectsByUserDepartment(Long userId) {
         User user = userRepository.findById(userId)
