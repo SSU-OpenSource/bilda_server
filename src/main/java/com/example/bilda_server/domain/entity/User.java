@@ -1,4 +1,4 @@
-package com.example.bilda_server.domain;
+package com.example.bilda_server.domain.entity;
 
 import com.example.bilda_server.domain.enums.Department;
 import com.example.bilda_server.request.UserSignUpRequest;
