@@ -1,6 +1,6 @@
 package com.example.bilda_server.repository;
 
-import com.example.bilda_server.domain.User;
+import com.example.bilda_server.domain.entity.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

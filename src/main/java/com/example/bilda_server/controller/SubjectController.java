@@ -1,12 +1,10 @@
 package com.example.bilda_server.controller;
 
 
-import com.example.bilda_server.domain.Subject;
-import com.example.bilda_server.domain.User;
-import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.domain.entity.Subject;
+import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.service.SubjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
