@@ -1,9 +1,12 @@
 package com.example.bilda_server.service;
 
-import com.example.bilda_server.domain.User;
+import static com.example.bilda_server.utils.ExceptionMessage.*;
+
+import com.example.bilda_server.auth.CustomUserDetails;
+import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.repository.UserJpaRepository;
-import com.example.bilda_server.request.LogInRequest;
-import com.example.bilda_server.request.UserSignUpRequest;
+import com.example.bilda_server.request.ChangePasswordRequest;
+import com.example.bilda_server.request.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User signUp(UserSignUpRequest request) {
+    public User signup(SignupRequest request) {
         User newUser = User.create(request, passwordEncoder);
 
         userRepository.findByEmail(newUser.getEmail()).ifPresent(user -> {
@@ -29,16 +32,13 @@ public class UserService {
         return newUser;
     }
 
-    public User logIn(LogInRequest request) {
-        User findUser = userRepository.findByEmail(request.email()).orElseThrow(
-            () -> new IllegalArgumentException("해당 이메일로 등록된 유저가 없습니다.")
-        );
+    @Transactional
+    public User changePassword(ChangePasswordRequest changePasswordRequest,
+        CustomUserDetails userDetails) {
+        User target = userRepository.findById(userDetails.getId())
+            .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
 
-        if (!findUser.matchPassword(request.password(), passwordEncoder)) {
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
-        }
-        return findUser;
+        target.changePassword(changePasswordRequest);
+        return target;
     }
-
-
 }

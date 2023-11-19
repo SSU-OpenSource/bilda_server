@@ -1,7 +1,8 @@
 package com.example.bilda_server.domain.entity;
 
 import com.example.bilda_server.domain.enums.Department;
-import com.example.bilda_server.request.UserSignUpRequest;
+import com.example.bilda_server.request.ChangePasswordRequest;
+import com.example.bilda_server.request.SignupRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -42,9 +43,9 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_subject",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_code")
+        name = "user_subject",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "subject_code")
     )
     private Set<Subject> subjects = new HashSet<>();
 
@@ -64,7 +65,7 @@ public class User {
         this.subjects = subjects;
     }
 
-    public static User create(UserSignUpRequest request, PasswordEncoder passwordEncoder) {
+    public static User create(SignupRequest request, PasswordEncoder passwordEncoder) {
         return User.builder()
             .email(request.email())
             .password(passwordEncoder.encode(request.password()))
@@ -77,5 +78,9 @@ public class User {
 
     public boolean matchPassword(String password, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(this.password, password);
+    }
+
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        this.password = changePasswordRequest.password();
     }
 }
