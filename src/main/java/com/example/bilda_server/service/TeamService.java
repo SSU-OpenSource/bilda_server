@@ -54,6 +54,12 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
+    public TeamResponseDTO findTeam(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+        return convertToTeamDTO(team);
+    }
+
 
     public List<TeamResponseDTO> findTeamsByUserId(Long userId) {
         User user = userRepository.findById(userId)

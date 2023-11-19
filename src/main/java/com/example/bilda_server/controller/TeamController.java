@@ -4,9 +4,7 @@ import com.example.bilda_server.controller.reqeust.CreateTeamRequest;
 import com.example.bilda_server.controller.response.TeamResponseDTO;
 import com.example.bilda_server.domain.Team;
 import com.example.bilda_server.service.TeamService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +19,18 @@ public class TeamController {
 
     private final TeamService teamService;
 
+
+    @GetMapping("/{teamId}")
     @ResponseBody
-    @GetMapping("/{userId}")
+    public ResponseEntity<TeamResponseDTO> getTeam(
+            @PathVariable Long teamId
+    ) {
+        TeamResponseDTO team = teamService.findTeam(teamId);
+        return ResponseEntity.ok(team);
+    }
+
+    @ResponseBody
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<TeamResponseDTO>> getTeams(
             @PathVariable Long userId
     ){
@@ -36,7 +44,7 @@ public class TeamController {
             @PathVariable Long leaderId,
             @RequestBody CreateTeamRequest request) {
 
-        Team team = teamService.createTeam(leaderId, request);
+        teamService.createTeam(leaderId, request);
         return ResponseEntity.ok().build();
     }
 
