@@ -1,7 +1,7 @@
 package com.example.bilda_server.service;
 
 import com.example.bilda_server.domain.User;
-import com.example.bilda_server.Repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserJpaRepository;
 import com.example.bilda_server.request.LogInRequest;
 import com.example.bilda_server.request.UserSignUpRequest;
 import lombok.RequiredArgsConstructor;

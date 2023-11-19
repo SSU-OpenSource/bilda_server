@@ -1,4 +1,4 @@
-package com.example.bilda_server.Repository;
+package com.example.bilda_server.repository;
 
 import com.example.bilda_server.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
