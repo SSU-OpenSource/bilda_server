@@ -4,6 +4,8 @@ import com.example.bilda_server.Repository.SubjectRepository;
 import com.example.bilda_server.Repository.TeamRepository;
 import com.example.bilda_server.Repository.UserJpaRepository;
 import com.example.bilda_server.controller.reqeust.CreateTeamRequest;
+import com.example.bilda_server.controller.response.TeamResponseDTO;
+import com.example.bilda_server.controller.response.UserResponseDTO;
 import com.example.bilda_server.domain.Subject;
 import com.example.bilda_server.domain.Team;
 import com.example.bilda_server.domain.User;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +40,7 @@ public class TeamService {
         users.add(leader);
 
         Team team = Team.builder()
-                .leaderId(leaderId)
+                .leader(leader)
                 .subject(subject)
                 .teamTitle(request.getTeamTitle())
                 .recruitmentEndDate(request.getRecruitmentEndDate())
@@ -49,5 +52,31 @@ public class TeamService {
                 .build();
 
         return teamRepository.save(team);
+    }
+
+
+    public List<TeamResponseDTO> findTeamsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+
+        return user.getTeams().stream()
+                .map(this::convertToTeamDTO)
+                .collect(Collectors.toList());
+
+    }
+
+    private TeamResponseDTO convertToTeamDTO(Team team) {
+
+        List<UserResponseDTO> memberDTOs = team.getUsers().stream()
+                .map(user -> new UserResponseDTO(user.getUserId(), user.getName()))
+                .toList();
+
+        return new TeamResponseDTO(
+                team.getTeamId(),
+                team.getTeamTitle(),
+                team.getSubject().getTitle(),
+                team.getLeader().getName(),
+                memberDTOs
+        );
     }
 }
