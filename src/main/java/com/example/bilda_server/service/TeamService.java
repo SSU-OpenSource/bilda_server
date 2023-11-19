@@ -82,6 +82,8 @@ public class TeamService {
                 team.getTeamTitle(),
                 team.getSubject().getTitle(),
                 team.getLeader().getName(),
+                team.getRecruitmentStatus(),
+                team.getBuildStartDate(),
                 memberDTOs
         );
     }
