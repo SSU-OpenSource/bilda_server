@@ -4,6 +4,7 @@ import static com.example.bilda_server.utils.RequestURI.*;
 
 import com.example.bilda_server.auth.CustomUserDetails;
 import com.example.bilda_server.domain.entity.User;
+import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
 import com.example.bilda_server.service.UserService;
@@ -36,4 +37,13 @@ public class UserController {
 
         return ResponseEntity.ok(userService.changePassword(changePasswordRequest, userDetails));
     }
+
+    @PutMapping("/nickname")
+    public ResponseEntity<User> changeNickname(
+        @RequestBody @Valid ChangeNicknameRequest changeNicknameRequest,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return ResponseEntity.ok(userService.changeNickname(changeNicknameRequest, userDetails));
+    }
+
 }

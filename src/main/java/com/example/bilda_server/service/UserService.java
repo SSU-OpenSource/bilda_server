@@ -5,6 +5,7 @@ import static com.example.bilda_server.utils.ExceptionMessage.*;
 import com.example.bilda_server.auth.CustomUserDetails;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,16 @@ public class UserService {
 
         target.changePassword(changePasswordRequest);
         return target;
+    }
+
+    @Transactional
+    public User changeNickname(ChangeNicknameRequest changeNicknameRequest,
+        CustomUserDetails userDetails) {
+        User target = userRepository.findById(userDetails.getId())
+            .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
+
+        target.changeNickname(changeNicknameRequest);
+        return target;
+
     }
 }
