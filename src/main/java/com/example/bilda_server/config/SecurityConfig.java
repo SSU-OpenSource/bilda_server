@@ -24,7 +24,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize ->
                 authorize.requestMatchers("/api/v1/subject/**").permitAll()
+                        .requestMatchers("/api/v1/teams/**").permitAll()
         );
+
         return http.build();
     }
 }
