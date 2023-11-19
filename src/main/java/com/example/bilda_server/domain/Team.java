@@ -3,8 +3,7 @@ package com.example.bilda_server.domain;
 import com.example.bilda_server.domain.enums.CompleteStatus;
 import com.example.bilda_server.domain.enums.RecruitmentStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,13 +11,15 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long teamId;
 
-    @ManyToOne
-    private User leader;
+    private Long leaderId;
 
     @ManyToMany
     @JoinTable(
@@ -28,6 +29,7 @@ public class Team {
     )
     private List<User> users;
 
+    //subject를 넘길 필요가 있나?
     @ManyToOne
     private Subject subject;
 
@@ -53,7 +55,6 @@ public class Team {
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns =  @JoinColumn(name ="user_id")
     )
-
     private List<User> pendingUsers;
 
 }
