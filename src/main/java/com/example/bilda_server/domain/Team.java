@@ -19,7 +19,8 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long teamId;
 
-    private Long leaderId;
+    @ManyToOne
+    private User leader;
 
     @ManyToMany
     @JoinTable(
