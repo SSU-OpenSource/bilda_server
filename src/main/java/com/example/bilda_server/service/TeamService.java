@@ -117,4 +117,29 @@ public class TeamService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void approvePendingUser(Long teamId, Long leaderId, Long pendingUserId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+        User pendingUser = userRepository.findById(pendingUserId)
+                .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
+
+        if (!team.getLeader().getUserId().equals(leaderId)) {
+            throw new IllegalStateException("Only team leader can approve pending user");
+        }
+
+        if (!team.getPendingUsers().contains(pendingUser)) {
+            throw new IllegalStateException("no pending request from the user to this team");
+        }
+
+        team.getPendingUsers().remove(pendingUser);
+        team.getUsers().add(pendingUser);
+
+
+        teamRepository.save(team);
+
+        //이건 고민해보자
+        // leader가 팀가입을 수락하면 해당 user의 subject set에서 과목 삭제
+    }
+
 }
