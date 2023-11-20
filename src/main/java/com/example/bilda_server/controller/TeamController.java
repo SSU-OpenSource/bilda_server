@@ -60,6 +60,16 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("{teamId}/reject/{pendingUserId}")
+    public ResponseEntity<Void> rejectJoinRequest(
+            @PathVariable Long teamId,
+            @RequestParam Long leaderId,
+            @PathVariable Long pendingUserId
+    ) {
+        teamService.rejectPendingUser(teamId, leaderId, pendingUserId);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/create/{leaderId}")
     public ResponseEntity<Void> createTeam(
             @PathVariable Long leaderId,
