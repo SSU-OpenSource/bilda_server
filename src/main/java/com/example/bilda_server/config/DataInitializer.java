@@ -1,7 +1,7 @@
 package com.example.bilda_server.config;
 
-import com.example.bilda_server.Repository.SubjectRepository;
-import com.example.bilda_server.domain.Subject;
+import com.example.bilda_server.repository.SubjectRepository;
+import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.enums.Department;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;

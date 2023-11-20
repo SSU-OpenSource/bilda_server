@@ -1,8 +1,7 @@
-package com.example.bilda_server.domain;
+package com.example.bilda_server.domain.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
