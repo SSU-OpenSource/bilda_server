@@ -23,13 +23,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
-            .formLogin(form -> form.loginPage(RequestURI.USER_REQUEST_PREFIX+"/login")
-	.permitAll()
-	.defaultSuccessUrl("/home", true)
-	.failureUrl("/login?error=page"))
-            .authorizeHttpRequests(
-	auth -> auth.requestMatchers(RequestURI.USER_REQUEST_PREFIX + "/login").permitAll()
-	    .anyRequest().authenticated())
+            .formLogin(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+	.requestMatchers("/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**",
+	    "/swagger-resources/**", "/webjars/**").permitAll()
+	.requestMatchers(RequestURI.USER_REQUEST_PREFIX + "/login").permitAll()
+	.anyRequest().permitAll())
             .addFilterAt(CustomUsernamePasswordAuthenticationFilter.getInstance(),
 	UsernamePasswordAuthenticationFilter.class);
 
