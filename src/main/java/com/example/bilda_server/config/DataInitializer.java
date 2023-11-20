@@ -1,8 +1,10 @@
 package com.example.bilda_server.config;
 
+import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.repository.SubjectRepository;
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.repository.UserJpaRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,9 @@ public class DataInitializer {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private UserJpaRepository userRepository;
 
     @PostConstruct
     public void initData(){
@@ -32,5 +37,15 @@ public class DataInitializer {
         subjectRepository.save(subject2);
 
 
+        User user1 = new User(1L, "happy@gmail.com", "super1234!", "홍길동", "gildong", "20230001", Department.COMPUTER, null, null, null);
+        User user2 = new User(2L, "test@gmail.com", "super1234!", "테스트", "test", "20230002", Department.COMPUTER, null, null, null);
+
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
     }
+
+
+
 }

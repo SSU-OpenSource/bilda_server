@@ -3,8 +3,7 @@ package com.example.bilda_server.domain.entity;
 import com.example.bilda_server.domain.enums.CompleteStatus;
 import com.example.bilda_server.domain.enums.RecruitmentStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +11,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,6 +35,7 @@ public class Team {
 
     private String teamTitle;
     private LocalDate recruitmentEndDate;
+    private Integer maxMemberNum;
 
     @Enumerated(EnumType.STRING)
     private RecruitmentStatus recruitmentStatus;
@@ -53,7 +56,6 @@ public class Team {
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns =  @JoinColumn(name ="user_id")
     )
-
     private List<User> pendingUsers;
 
 }
