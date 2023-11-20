@@ -1,5 +1,6 @@
 package com.example.bilda_server.service;
 
+import com.example.bilda_server.mapper.TeamMapper;
 import com.example.bilda_server.repository.SubjectRepository;
 import com.example.bilda_server.repository.TeamRepository;
 import com.example.bilda_server.repository.UserJpaRepository;
@@ -28,6 +29,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final UserJpaRepository userRepository;
     private final SubjectRepository subjectRepository;
+    private final TeamMapper teamMapper;
 
     @Transactional
     public Team createTeam(Long leaderId, CreateTeamRequest request) {
@@ -59,7 +61,7 @@ public class TeamService {
     public TeamResponseDTO findTeam(Long teamId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("team not found"));
-        return convertToTeamDTO(team);
+        return teamMapper.ToTeamResponseDTO(team);
     }
 
     public List<TeamsOfSubjectDTO> findTeamsBySubjectId(Long subjectId) {
@@ -71,7 +73,7 @@ public class TeamService {
         );
 
         return teams.stream()
-                .map(this::convertToTeamsOfSubjectDTO)
+                .map(teamMapper::ToTeamsOfSubjectDTO)
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +83,7 @@ public class TeamService {
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
         return user.getTeams().stream()
-                .map(this::convertToTeamDTO)
+                .map(teamMapper::ToTeamResponseDTO)
                 .collect(Collectors.toList());
 
     }
@@ -95,7 +97,6 @@ public class TeamService {
 
         if (team.getPendingUsers().contains(user)) {
             throw new IllegalStateException("User already requested to join the team");
-
         }
 
         team.getPendingUsers().add(user);
@@ -103,33 +104,4 @@ public class TeamService {
         teamRepository.save(team);
     }
 
-    private TeamResponseDTO convertToTeamDTO(Team team) {
-
-        List<UserResponseDTO> memberDTOs = team.getUsers().stream()
-                .map(user -> new UserResponseDTO(user.getUserId(), user.getName()))
-                .toList();
-
-        return new TeamResponseDTO(
-                team.getTeamId(),
-                team.getLeader().getUserId(),
-                team.getTeamTitle(),
-                team.getSubject().getTitle(),
-                team.getLeader().getName(),
-                team.getRecruitmentStatus(),
-                team.getBuildStartDate(),
-                memberDTOs
-        );
-    }
-
-    private TeamsOfSubjectDTO convertToTeamsOfSubjectDTO(Team team) {
-
-        return new TeamsOfSubjectDTO(
-                team.getTeamId(),
-                team.getTeamTitle(),
-                team.getSubject().getTitle(),
-                team.getRecruitmentStatus(),
-                team.getUsers().size(),
-                team.getMaxMemberNum()
-        );
-    }
 }

@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Rjsn937129!
-    url: jdbc:mysql://localhost:3306/bilda
+    password: hk987852!
+    url: jdbc:mysql://localhost:3306/opensource
 
   jpa:
     hibernate:
