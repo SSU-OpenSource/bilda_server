@@ -1,6 +1,7 @@
 package com.example.bilda_server.service;
 
 import com.example.bilda_server.mapper.TeamMapper;
+import com.example.bilda_server.mapper.UserMapper;
 import com.example.bilda_server.repository.SubjectRepository;
 import com.example.bilda_server.repository.TeamRepository;
 import com.example.bilda_server.repository.UserJpaRepository;
@@ -10,6 +11,7 @@ import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.domain.enums.CompleteStatus;
 import com.example.bilda_server.domain.enums.RecruitmentStatus;
 import com.example.bilda_server.request.CreateTeamRequest;
+import com.example.bilda_server.response.PendingUserDTO;
 import com.example.bilda_server.response.TeamResponseDTO;
 import com.example.bilda_server.response.TeamsOfSubjectDTO;
 import com.example.bilda_server.response.UserResponseDTO;
@@ -29,8 +31,9 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final UserJpaRepository userRepository;
     private final SubjectRepository subjectRepository;
-    private final TeamMapper teamMapper;
 
+    private final TeamMapper teamMapper;
+    private final UserMapper userMapper;
     @Transactional
     public Team createTeam(Long leaderId, CreateTeamRequest request) {
         User leader = userRepository.findById(leaderId)
@@ -88,6 +91,7 @@ public class TeamService {
 
     }
 
+    //join요청에 해당하는 메서드
     @Transactional
     public void addPendingUserToTeam(Long teamId, Long userId) {
         Team team = teamRepository.findById(teamId)
@@ -102,6 +106,15 @@ public class TeamService {
         team.getPendingUsers().add(user);
 
         teamRepository.save(team);
+    }
+
+    public List<PendingUserDTO> getPendingUsers(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("Team not Found"));
+
+        return team.getPendingUsers().stream()
+                .map(userMapper::ToPendingUserDto)
+                .collect(Collectors.toList());
     }
 
 }

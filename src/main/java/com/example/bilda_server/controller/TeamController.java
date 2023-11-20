@@ -2,6 +2,7 @@ package com.example.bilda_server.controller;
 
 import com.example.bilda_server.domain.entity.Team;
 import com.example.bilda_server.request.CreateTeamRequest;
+import com.example.bilda_server.response.PendingUserDTO;
 import com.example.bilda_server.response.TeamResponseDTO;
 import com.example.bilda_server.response.TeamsOfSubjectDTO;
 import com.example.bilda_server.service.TeamService;
@@ -59,6 +60,7 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+    //join요청
     @PostMapping("/{teamId}/join/{userId}")
     public ResponseEntity<Void> requestJoinTeam(
             @PathVariable Long teamId,
@@ -68,6 +70,12 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{teamId}/recruit")
+    public ResponseEntity<List<PendingUserDTO>> getPendingUsersByTeamId(
+            @PathVariable Long teamId
+    ) {
 
-
+        List<PendingUserDTO> pendingUsers = teamService.getPendingUsers(teamId);
+        return ResponseEntity.ok(pendingUsers);
+    }
 }
