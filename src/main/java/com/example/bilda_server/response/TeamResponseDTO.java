@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamResponseDTO {
     private Long teamId;
+    private Long leaderId;
     private String teamTitle;
     private String subjectTitle;
     private String leaderName;

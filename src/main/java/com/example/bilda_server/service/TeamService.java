@@ -94,6 +94,7 @@ public class TeamService {
 
         return new TeamResponseDTO(
                 team.getTeamId(),
+                team.getLeader().getUserId(),
                 team.getTeamTitle(),
                 team.getSubject().getTitle(),
                 team.getLeader().getName(),
@@ -110,7 +111,7 @@ public class TeamService {
                 team.getTeamTitle(),
                 team.getSubject().getTitle(),
                 team.getRecruitmentStatus(),
-                team.getMaxMemberNum(),
+                team.getUsers().size(),
                 team.getMaxMemberNum()
         );
     }
