@@ -8,6 +8,9 @@ import com.example.bilda_server.repository.UserJpaRepository;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
+import com.example.bilda_server.response.ChangeNicknameResponse;
+import com.example.bilda_server.response.ChangePasswordResponse;
+import com.example.bilda_server.response.SignupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User signup(SignupRequest request) {
+    public SignupResponse signup(SignupRequest request) {
         User newUser = User.create(request, passwordEncoder);
 
         userRepository.findByEmail(newUser.getEmail()).ifPresent(user -> {
@@ -30,27 +33,28 @@ public class UserService {
         );
 
         userRepository.save(newUser);
-        return newUser;
+        return new SignupResponse(newUser.getEmail(), newUser.getPassword(), newUser.getName(),
+            newUser.getStudentId(), newUser.getNickname(), newUser.getDepartment());
     }
 
     @Transactional
-    public User changePassword(ChangePasswordRequest changePasswordRequest,
+    public ChangePasswordResponse changePassword(ChangePasswordRequest changePasswordRequest,
         CustomUserDetails userDetails) {
         User target = userRepository.findById(userDetails.getId())
             .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
 
         target.changePassword(changePasswordRequest);
-        return target;
+        return new ChangePasswordResponse(target.getPassword());
     }
 
     @Transactional
-    public User changeNickname(ChangeNicknameRequest changeNicknameRequest,
+    public ChangeNicknameResponse changeNickname(ChangeNicknameRequest changeNicknameRequest,
         CustomUserDetails userDetails) {
         User target = userRepository.findById(userDetails.getId())
             .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
 
         target.changeNickname(changeNicknameRequest);
-        return target;
+        return new ChangeNicknameResponse(target.getNickname());
 
     }
 }
