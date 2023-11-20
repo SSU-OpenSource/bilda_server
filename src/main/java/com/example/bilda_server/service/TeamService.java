@@ -86,6 +86,23 @@ public class TeamService {
 
     }
 
+    @Transactional
+    public void addPendingUserToTeam(Long teamId, Long userId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (team.getPendingUsers().contains(user)) {
+            throw new IllegalStateException("User already requested to join the team");
+
+        }
+
+        team.getPendingUsers().add(user);
+
+        teamRepository.save(team);
+    }
+
     private TeamResponseDTO convertToTeamDTO(Team team) {
 
         List<UserResponseDTO> memberDTOs = team.getUsers().stream()

@@ -34,7 +34,7 @@ public class TeamController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TeamResponseDTO>> getTeams(
             @PathVariable Long userId
-    ){
+    ) {
         List<TeamResponseDTO> teams = teamService.findTeamsByUserId(userId);
         return ResponseEntity.ok(teams);
     }
@@ -44,7 +44,7 @@ public class TeamController {
 
     public ResponseEntity<List<TeamsOfSubjectDTO>> getTeamsBySubjectID(
             @PathVariable Long subjectId
-    ){
+    ) {
         List<TeamsOfSubjectDTO> teams = teamService.findTeamsBySubjectId(subjectId);
         return ResponseEntity.ok(teams);
     }
@@ -58,4 +58,16 @@ public class TeamController {
         Team team = teamService.createTeam(leaderId, request);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{teamId}/join/{userId}")
+    public ResponseEntity<Void> requestJoinTeam(
+            @PathVariable Long teamId,
+            @PathVariable Long userId
+    ){
+        teamService.addPendingUserToTeam(teamId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }
