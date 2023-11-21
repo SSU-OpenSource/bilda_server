@@ -48,12 +48,12 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "subject_code")
     )
-    private Set<Subject> subjects = new HashSet<>();
+    private List<Subject> subjects;
 
     @Builder
     public User(Long userId, String email, String password, String nickname, String name,
         String studentId,
-        Department department, Page myPage, List<Team> teams, Set<Subject> subjects) {
+        Department department, Page myPage, List<Team> teams, List<Subject> subjects) {
         this.userId = userId;
         this.email = email;
         this.password = password;
