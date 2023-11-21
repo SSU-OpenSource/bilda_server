@@ -99,6 +99,15 @@ public class TeamService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+        boolean hasPendingRequest = teamRepository.findAllBySubject(team.getSubject()).stream()
+                .flatMap(t -> t.getPendingUsers().stream())
+                .anyMatch(pendingUser -> pendingUser.equals(user));
+
+
+        if(hasPendingRequest){
+            throw new IllegalStateException("User already has a pending join request in this subject");
+        }
+
         if (team.getPendingUsers().contains(user)) {
             throw new IllegalStateException("User already requested to join the team");
         }
