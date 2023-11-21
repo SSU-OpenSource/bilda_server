@@ -53,20 +53,18 @@ public class TeamController {
     @PostMapping("{teamId}/approve/{pendingUserId}")
     public ResponseEntity<Void> approveJoinRequest(
             @PathVariable Long teamId,
-            @RequestParam Long leaderId,
             @PathVariable Long pendingUserId
     ) {
-        teamService.approvePendingUser(teamId, leaderId, pendingUserId);
+        teamService.approvePendingUser(teamId, pendingUserId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("{teamId}/reject/{pendingUserId}")
     public ResponseEntity<Void> rejectJoinRequest(
             @PathVariable Long teamId,
-            @RequestParam Long leaderId,
             @PathVariable Long pendingUserId
     ) {
-        teamService.rejectPendingUser(teamId, leaderId, pendingUserId);
+        teamService.rejectPendingUser(teamId, pendingUserId);
         return ResponseEntity.ok().build();
     }
 
