@@ -131,6 +131,9 @@ public class TeamService {
         team.getPendingUsers().remove(pendingUser);
         team.getUsers().add(pendingUser);
 
+        if (team.getPendingUsers().size() >= team.getMaxMemberNum()) {
+            team.setRecruitmentStatus(RecruitmentStatus.BUILDING);
+        }
 
         teamRepository.save(team);
 
