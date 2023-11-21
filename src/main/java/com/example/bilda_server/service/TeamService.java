@@ -167,4 +167,13 @@ public class TeamService {
 
     }
 
+    public void setCompleteStatus(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+
+        team.setCompleteStatus(CompleteStatus.COMPLETE);
+
+        teamRepository.save(team);
+    }
+
 }

@@ -82,7 +82,7 @@ public class TeamController {
     public ResponseEntity<Void> requestJoinTeam(
             @PathVariable Long teamId,
             @PathVariable Long userId
-    ){
+    ) {
         teamService.addPendingUserToTeam(teamId, userId);
         return ResponseEntity.ok().build();
     }
@@ -94,5 +94,13 @@ public class TeamController {
 
         List<PendingUserDTO> pendingUsers = teamService.getPendingUsers(teamId);
         return ResponseEntity.ok(pendingUsers);
+    }
+
+    @PostMapping("/complete/{teamId}")
+    public ResponseEntity<Void> completeTeam(
+            @PathVariable Long teamId
+    ){
+        teamService.setCompleteStatus(teamId);
+        return ResponseEntity.ok().build();
     }
 }
