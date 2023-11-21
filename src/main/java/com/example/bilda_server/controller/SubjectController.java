@@ -20,15 +20,22 @@ public class SubjectController {
 
     private final SubjectService subjectService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/department/{userId}")
     @ResponseBody
     public ResponseEntity<List<Subject>> getSubjectsByDepartment(@PathVariable Long userId) {
         List<Subject> subjects = subjectService.findSubjectsByUserDepartment(userId);
         return ResponseEntity.ok(subjects);
     }
 
+    @GetMapping("/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<Subject>> getSubjects(@PathVariable Long userId) {
+        List<Subject> subjects = subjectService.findSubjectsByUserId(userId);
+        return ResponseEntity.ok(subjects);
+    }
+
     @PostMapping("/{userId}/add/{subjectCode}")
-    public ResponseEntity<User> addSubjectToUser(@PathVariable Long userId, @PathVariable Long subjectCode){
+    public ResponseEntity<User> addSubjectToUser(@PathVariable Long userId, @PathVariable Long subjectCode) {
         subjectService.addUserToSubject(subjectCode, userId);
         return ResponseEntity.ok().build();
     }
