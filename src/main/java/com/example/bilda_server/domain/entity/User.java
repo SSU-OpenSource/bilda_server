@@ -5,14 +5,12 @@ import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -48,12 +46,12 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "subject_code")
     )
-    private Set<Subject> subjects = new HashSet<>();
+    private List<Subject> subjects = new ArrayList<>();
 
     @Builder
     public User(Long id, String email, String password, String nickname, String name,
         String studentId,
-        Department department, Page myPage, List<Team> teams, Set<Subject> subjects) {
+        Department department, Page myPage, List<Team> teams, List<Subject> subjects) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -75,10 +73,6 @@ public class User {
             .nickname(request.nickname())
             .department(request.department())
             .build();
-    }
-
-    public boolean matchPassword(String password, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(this.password, password);
     }
 
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
