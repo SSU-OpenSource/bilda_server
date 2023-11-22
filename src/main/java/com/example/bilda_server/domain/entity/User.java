@@ -1,6 +1,7 @@
 package com.example.bilda_server.domain.entity;
 
 import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.domain.enums.Role;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
