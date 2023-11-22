@@ -3,6 +3,7 @@ package com.example.bilda_server.controller;
 
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.entity.User;
+import com.example.bilda_server.response.SubjectWithTeamStatusDTO;
 import com.example.bilda_server.service.SubjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class SubjectController {
     @Operation(summary = "유저가 속해있는 과목정보 가져오기", description = "userId를 pathVariable로 넘기면 유저가 듣고있는 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
     @GetMapping("/{userId}")
     @ResponseBody
-    public ResponseEntity<List<Subject>> getSubjects(@PathVariable Long userId) {
-        List<Subject> subjects = subjectService.findSubjectsByUserId(userId);
+    public ResponseEntity<List<SubjectWithTeamStatusDTO>> getSubjects(@PathVariable Long userId) {
+        List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(userId);
         return ResponseEntity.ok(subjects);
     }
 
@@ -43,6 +44,5 @@ public class SubjectController {
         subjectService.addUserToSubject(subjectCode, userId);
         return ResponseEntity.ok().build();
     }
-
 
 }

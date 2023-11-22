@@ -26,5 +26,6 @@ public class Subject {
 
     private String professor;
     private String section; //학기 정보
+    private boolean hasTeam; //해당 과목에 팀이 있는지 여부
 
 }
