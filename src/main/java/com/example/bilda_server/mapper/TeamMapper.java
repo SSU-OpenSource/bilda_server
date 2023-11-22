@@ -14,12 +14,12 @@ public class TeamMapper {
     public TeamResponseDTO ToTeamResponseDTO(Team team) {
 
         List<UserResponseDTO> memberDTOs = team.getUsers().stream()
-                .map(user -> new UserResponseDTO(user.getUserId(), user.getName()))
+                .map(user -> new UserResponseDTO(user.getId(), user.getName()))
                 .toList();
 
         return new TeamResponseDTO(
                 team.getTeamId(),
-                team.getLeader().getUserId(),
+                team.getLeader().getId(),
                 team.getTeamTitle(),
                 team.getSubject().getTitle(),
                 team.getLeader().getName(),

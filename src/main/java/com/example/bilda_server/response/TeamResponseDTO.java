@@ -8,11 +8,10 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.util.List;
 
-//사용자가 해당한 팀들을 불러올 때는 팀 아이디, 팀 제목, 과목 명만을 받아온다.
-//
 @Getter
 @AllArgsConstructor
 public class TeamResponseDTO {
+
     private Long teamId;
     private Long leaderId;
     private String teamTitle;
@@ -22,5 +21,4 @@ public class TeamResponseDTO {
     private CompleteStatus completeStatus;
     private LocalDate buildStartDate;
     private List<UserResponseDTO> members;
-
 }

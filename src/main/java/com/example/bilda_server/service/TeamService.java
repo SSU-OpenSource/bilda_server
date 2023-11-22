@@ -14,7 +14,6 @@ import com.example.bilda_server.request.CreateTeamRequest;
 import com.example.bilda_server.response.PendingUserDTO;
 import com.example.bilda_server.response.TeamResponseDTO;
 import com.example.bilda_server.response.TeamsOfSubjectDTO;
-import com.example.bilda_server.response.UserResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,25 +36,25 @@ public class TeamService {
     @Transactional
     public Team createTeam(Long leaderId, CreateTeamRequest request) {
         User leader = userRepository.findById(leaderId)
-                .orElseThrow(() -> new EntityNotFoundException("Leader not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Leader not found"));
         Subject subject = subjectRepository.findById(request.getSubjectId())
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
 
         List<User> users = new ArrayList<>();
         users.add(leader);
 
         Team team = Team.builder()
-                .leader(leader)
-                .subject(subject)
-                .teamTitle(request.getTeamTitle())
-                .recruitmentEndDate(request.getRecruitmentEndDate())
-                .maxMemberNum(request.getMaxMember())
-                .teamInfoMessage(request.getTeamInfoMessage())
-                .recruitmentStatus(RecruitmentStatus.RECRUIT)
-                .completeStatus(CompleteStatus.PROGRESS)
-                .users(users)
-                .pendingUsers(new ArrayList<>())
-                .build();
+            .leader(leader)
+            .subject(subject)
+            .teamTitle(request.getTeamTitle())
+            .recruitmentEndDate(request.getRecruitmentEndDate())
+            .maxMemberNum(request.getMaxMember())
+            .teamInfoMessage(request.getTeamInfoMessage())
+            .recruitmentStatus(RecruitmentStatus.RECRUIT)
+            .completeStatus(CompleteStatus.PROGRESS)
+            .users(users)
+            .pendingUsers(new ArrayList<>())
+            .build();
         teamRepository.save(team);
 
         return team;
@@ -63,31 +62,31 @@ public class TeamService {
 
     public TeamResponseDTO findTeam(Long teamId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+            .orElseThrow(() -> new EntityNotFoundException("team not found"));
         return teamMapper.ToTeamResponseDTO(team);
     }
 
     public List<TeamsOfSubjectDTO> findTeamsBySubjectId(Long subjectId) {
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new EntityNotFoundException("subject not found"));
+            .orElseThrow(() -> new EntityNotFoundException("subject not found"));
 
         List<Team> teams = teamRepository.findBySubject(
-                subject
+            subject
         );
 
         return teams.stream()
-                .map(teamMapper::ToTeamsOfSubjectDTO)
-                .collect(Collectors.toList());
+            .map(teamMapper::ToTeamsOfSubjectDTO)
+            .collect(Collectors.toList());
     }
 
 
     public List<TeamResponseDTO> findTeamsByUserId(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+            .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
         return user.getTeams().stream()
-                .map(teamMapper::ToTeamResponseDTO)
-                .collect(Collectors.toList());
+            .map(teamMapper::ToTeamResponseDTO)
+            .collect(Collectors.toList());
 
     }
 
@@ -95,16 +94,16 @@ public class TeamService {
     @Transactional
     public void addPendingUserToTeam(Long teamId, Long userId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+            .orElseThrow(() -> new EntityNotFoundException("team not found"));
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         boolean hasPendingRequest = teamRepository.findAllBySubject(team.getSubject()).stream()
-                .flatMap(t -> t.getPendingUsers().stream())
-                .anyMatch(pendingUser -> pendingUser.equals(user));
+            .flatMap(t -> t.getPendingUsers().stream())
+            .anyMatch(pendingUser -> pendingUser.equals(user));
 
         boolean hasTeamInThisSubject = user.getTeams().stream()
-                .anyMatch(t -> t.getSubject().equals(team.getSubject()));
+            .anyMatch(t -> t.getSubject().equals(team.getSubject()));
 
 
 
@@ -127,19 +126,19 @@ public class TeamService {
 
     public List<PendingUserDTO> getPendingUsers(Long teamId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("Team not Found"));
+            .orElseThrow(() -> new EntityNotFoundException("Team not Found"));
 
         return team.getPendingUsers().stream()
-                .map(userMapper::ToPendingUserDto)
-                .collect(Collectors.toList());
+            .map(userMapper::ToPendingUserDto)
+            .collect(Collectors.toList());
     }
 
     @Transactional
     public void approvePendingUser(Long teamId, Long pendingUserId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+            .orElseThrow(() -> new EntityNotFoundException("team not found"));
         User pendingUser = userRepository.findById(pendingUserId)
-                .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
+            .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
 
         if (!team.getPendingUsers().contains(pendingUser)) {
             throw new IllegalStateException("no pending request from the user to this team");
@@ -161,9 +160,9 @@ public class TeamService {
     @Transactional
     public void rejectPendingUser(Long teamId, Long pendingUserId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+            .orElseThrow(() -> new EntityNotFoundException("team not found"));
         User pendingUser = userRepository.findById(pendingUserId)
-                .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
+            .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
 
         if (!team.getPendingUsers().contains(pendingUser)) {
             throw new IllegalStateException("no pending request from the user to this team");
@@ -177,7 +176,7 @@ public class TeamService {
 
     public void setCompleteStatus(Long teamId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+            .orElseThrow(() -> new EntityNotFoundException("team not found"));
 
         team.setCompleteStatus(CompleteStatus.COMPLETE);
 

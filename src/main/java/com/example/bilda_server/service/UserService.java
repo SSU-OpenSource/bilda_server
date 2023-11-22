@@ -3,13 +3,17 @@ package com.example.bilda_server.service;
 import static com.example.bilda_server.utils.ExceptionMessage.*;
 
 import com.example.bilda_server.auth.CustomUserDetails;
+import com.example.bilda_server.domain.entity.Tokens;
 import com.example.bilda_server.domain.entity.User;
+import com.example.bilda_server.jwt.JwtTokenManager;
 import com.example.bilda_server.repository.UserJpaRepository;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
 import com.example.bilda_server.response.ChangeNicknameResponse;
 import com.example.bilda_server.response.ChangePasswordResponse;
+import com.example.bilda_server.request.SignInRequest;
+import com.example.bilda_server.response.AuthorizedResponse;
 import com.example.bilda_server.response.SignupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +26,7 @@ public class UserService {
 
     private final UserJpaRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenManager jwtTokenManager;
 
     @Transactional
     public SignupResponse signup(SignupRequest request) {
@@ -36,6 +41,17 @@ public class UserService {
         return new SignupResponse(newUser.getEmail(), newUser.getPassword(), newUser.getName(),
             newUser.getStudentId(), newUser.getNickname(), newUser.getDepartment());
     }
+
+    @Transactional(readOnly = true)
+    public AuthorizedResponse signin(SignInRequest request) {
+        User user = userRepository.findByEmail(request.email())
+            .filter(u -> passwordEncoder.matches(request.password(),
+	u.getPassword()))
+            .orElseThrow(() -> new IllegalArgumentException(LOGIN_FAILURE));
+        Tokens tokens = jwtTokenManager.generateTokens(user.getEmail());
+        return new AuthorizedResponse(tokens.getAccessToken(), tokens.getRefreshToken());
+    }
+
 
     @Transactional
     public ChangePasswordResponse changePassword(ChangePasswordRequest changePasswordRequest,

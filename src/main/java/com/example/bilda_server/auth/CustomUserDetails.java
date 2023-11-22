@@ -33,7 +33,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public Long getId() {
-        return user.getUserId();
+        return user.getId();
     }
 
     @Override
