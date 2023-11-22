@@ -89,7 +89,7 @@ public class TeamService {
     private TeamResponseDTO convertToTeamDTO(Team team) {
 
         List<UserResponseDTO> memberDTOs = team.getUsers().stream()
-                .map(user -> new UserResponseDTO(user.getUserId(), user.getName()))
+                .map(user -> new UserResponseDTO(user.getId(), user.getName()))
                 .toList();
 
         return new TeamResponseDTO(
