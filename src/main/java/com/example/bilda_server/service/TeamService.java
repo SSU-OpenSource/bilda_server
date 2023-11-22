@@ -32,25 +32,25 @@ public class TeamService {
     @Transactional
     public Team createTeam(Long leaderId, CreateTeamRequest request) {
         User leader = userRepository.findById(leaderId)
-                .orElseThrow(() -> new EntityNotFoundException("Leader not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Leader not found"));
         Subject subject = subjectRepository.findById(request.getSubjectId())
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
 
         List<User> users = new ArrayList<>();
         users.add(leader);
 
         Team team = Team.builder()
-                .leader(leader)
-                .subject(subject)
-                .teamTitle(request.getTeamTitle())
-                .recruitmentEndDate(request.getRecruitmentEndDate())
-                .maxMemberNum(request.getMaxMember())
-                .teamInfoMessage(request.getTeamInfoMessage())
-                .recruitmentStatus(RecruitmentStatus.RECRUIT)
-                .completeStatus(CompleteStatus.PROGRESS)
-                .users(users)
-                .pendingUsers(new ArrayList<>())
-                .build();
+            .leader(leader)
+            .subject(subject)
+            .teamTitle(request.getTeamTitle())
+            .recruitmentEndDate(request.getRecruitmentEndDate())
+            .maxMemberNum(request.getMaxMember())
+            .teamInfoMessage(request.getTeamInfoMessage())
+            .recruitmentStatus(RecruitmentStatus.RECRUIT)
+            .completeStatus(CompleteStatus.PROGRESS)
+            .users(users)
+            .pendingUsers(new ArrayList<>())
+            .build();
         teamRepository.save(team);
 
         return team;
@@ -58,60 +58,62 @@ public class TeamService {
 
     public TeamResponseDTO findTeam(Long teamId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+            .orElseThrow(() -> new EntityNotFoundException("team not found"));
         return convertToTeamDTO(team);
     }
 
     public List<TeamsOfSubjectDTO> findTeamsBySubjectId(Long subjectId) {
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new EntityNotFoundException("subject not found"));
+            .orElseThrow(() -> new EntityNotFoundException("subject not found"));
 
         List<Team> teams = teamRepository.findBySubject(
-                subject
+            subject
         );
 
         return teams.stream()
-                .map(this::convertToTeamsOfSubjectDTO)
-                .collect(Collectors.toList());
+            .map(this::convertToTeamsOfSubjectDTO)
+            .collect(Collectors.toList());
     }
 
 
     public List<TeamResponseDTO> findTeamsByUserId(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+            .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
         return user.getTeams().stream()
-                .map(this::convertToTeamDTO)
-                .collect(Collectors.toList());
+            .map(this::convertToTeamDTO)
+            .collect(Collectors.toList());
 
     }
 
     private TeamResponseDTO convertToTeamDTO(Team team) {
 
         List<UserResponseDTO> memberDTOs = team.getUsers().stream()
-                .map(user -> new UserResponseDTO(user.getId(), user.getName()))
-                .toList();
+            .map(user -> new UserResponseDTO(user.getId(), user.getName()))
+            .toList();
 
         return new TeamResponseDTO(
-                team.getTeamId(),
-                team.getTeamTitle(),
-                team.getSubject().getTitle(),
-                team.getLeader().getName(),
-                team.getRecruitmentStatus(),
-                team.getBuildStartDate(),
-                memberDTOs
+            team.getTeamId(),
+            team.getLeader().getId(),
+            team.getTeamTitle(),
+            team.getSubject().getTitle(),
+            team.getLeader().getName(),
+            team.getRecruitmentStatus(),
+            team.getCompleteStatus(),
+            team.getBuildStartDate(),
+            memberDTOs
         );
     }
 
     private TeamsOfSubjectDTO convertToTeamsOfSubjectDTO(Team team) {
 
         return new TeamsOfSubjectDTO(
-                team.getTeamId(),
-                team.getTeamTitle(),
-                team.getSubject().getTitle(),
-                team.getRecruitmentStatus(),
-                team.getMaxMemberNum(),
-                team.getMaxMemberNum()
+            team.getTeamId(),
+            team.getTeamTitle(),
+            team.getSubject().getTitle(),
+            team.getRecruitmentStatus(),
+            team.getMaxMemberNum(),
+            team.getMaxMemberNum()
         );
     }
 }

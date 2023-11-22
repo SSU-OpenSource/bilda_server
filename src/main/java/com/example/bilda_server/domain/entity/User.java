@@ -1,7 +1,6 @@
 package com.example.bilda_server.domain.entity;
 
 import com.example.bilda_server.domain.enums.Department;
-import com.example.bilda_server.domain.enums.Role;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
@@ -33,8 +32,6 @@ public class User {
     private String studentId;
     @Enumerated(EnumType.STRING)
     private Department department;
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     //page 엔티티에 정의된 User 객체에 대한 참조를 나타낸다.
     //cascade 는 User엔티티와 관련된 Page엔티티에 대한 영속성 관리 작업(저장, 조회, 삭제, 업데이트)이 User 엔티티에서도 적용되게한다.
@@ -44,6 +41,7 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private List<Team> teams;
+
     @ManyToMany
     @JoinTable(
         name = "user_subject",
@@ -51,13 +49,11 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "subject_code")
     )
     private Set<Subject> subjects = new HashSet<>();
-    private String accessToken;
-    private String refreshToken;
 
     @Builder
     public User(Long id, String email, String password, String nickname, String name,
         String studentId,
-        Department department, Page myPage, List<Team> teams, Set<Subject> subjects, Role role) {
+        Department department, Page myPage, List<Team> teams, Set<Subject> subjects) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -68,7 +64,6 @@ public class User {
         this.myPage = myPage;
         this.teams = teams;
         this.subjects = subjects;
-        this.role = role;
     }
 
     public static User create(SignupRequest request, PasswordEncoder passwordEncoder) {
@@ -80,6 +75,10 @@ public class User {
             .nickname(request.nickname())
             .department(request.department())
             .build();
+    }
+
+    public boolean matchPassword(String password, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(this.password, password);
     }
 
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
