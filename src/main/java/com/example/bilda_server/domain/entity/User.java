@@ -32,6 +32,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Department department;
     private Role role;
+    private String accessToken;
+    private String refreshToken;
 
     //page 엔티티에 정의된 User 객체에 대한 참조를 나타낸다.
     //cascade 는 User엔티티와 관련된 Page엔티티에 대한 영속성 관리 작업(저장, 조회, 삭제, 업데이트)이 User 엔티티에서도 적용되게한다.
