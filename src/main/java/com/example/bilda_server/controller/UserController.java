@@ -5,9 +5,11 @@ import static com.example.bilda_server.utils.RequestURI.*;
 import com.example.bilda_server.auth.CustomUserDetails;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
+import com.example.bilda_server.request.SignInRequest;
 import com.example.bilda_server.request.SignupRequest;
 import com.example.bilda_server.response.ChangeNicknameResponse;
 import com.example.bilda_server.response.ChangePasswordResponse;
+import com.example.bilda_server.response.AuthorizedResponse;
 import com.example.bilda_server.response.SignupResponse;
 import com.example.bilda_server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +33,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
+    @Operation(summary = "로그인 요청", description = "로그인을 진행합니다.", tags = {
+        "UserController"})
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK",
+            content = @Content(schema = @Schema(implementation = AuthorizedResponse.class))),
+        @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+        @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+        @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @PostMapping("/signin")
+    public ResponseEntity<AuthorizedResponse> signin(@RequestBody @Valid SignInRequest signinRequest) {
+        return ResponseEntity.ok(userService.signin(signinRequest));
+    }
 
     @Operation(summary = "회원 가입 요청", description = "HTTP Body를 토대로 회원 가입을 진행합니다.", tags = {
         "UserController"})
