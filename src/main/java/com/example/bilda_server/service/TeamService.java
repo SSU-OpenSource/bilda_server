@@ -99,6 +99,23 @@ public class TeamService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+        boolean hasPendingRequest = teamRepository.findAllBySubject(team.getSubject()).stream()
+                .flatMap(t -> t.getPendingUsers().stream())
+                .anyMatch(pendingUser -> pendingUser.equals(user));
+
+        boolean hasTeamInThisSubject = user.getTeams().stream()
+                .anyMatch(t -> t.getSubject().equals(team.getSubject()));
+
+
+
+        if(hasPendingRequest){
+            throw new IllegalStateException("User already has a pending join request in this subject");
+        }
+
+        if(hasTeamInThisSubject){
+            throw new IllegalStateException("User already is a member of a team in this subject");
+        }
+
         if (team.getPendingUsers().contains(user)) {
             throw new IllegalStateException("User already requested to join the team");
         }
@@ -118,15 +135,11 @@ public class TeamService {
     }
 
     @Transactional
-    public void approvePendingUser(Long teamId, Long leaderId, Long pendingUserId) {
+    public void approvePendingUser(Long teamId, Long pendingUserId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("team not found"));
         User pendingUser = userRepository.findById(pendingUserId)
                 .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
-
-        if (!team.getLeader().getUserId().equals(leaderId)) {
-            throw new IllegalStateException("Only team leader can approve pending user");
-        }
 
         if (!team.getPendingUsers().contains(pendingUser)) {
             throw new IllegalStateException("no pending request from the user to this team");
@@ -135,6 +148,9 @@ public class TeamService {
         team.getPendingUsers().remove(pendingUser);
         team.getUsers().add(pendingUser);
 
+        if (team.getPendingUsers().size() >= team.getMaxMemberNum()) {
+            team.setRecruitmentStatus(RecruitmentStatus.BUILDING);
+        }
 
         teamRepository.save(team);
 
@@ -143,15 +159,11 @@ public class TeamService {
     }
 
     @Transactional
-    public void rejectPendingUser(Long teamId, Long leaderId, Long pendingUserId) {
+    public void rejectPendingUser(Long teamId, Long pendingUserId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("team not found"));
         User pendingUser = userRepository.findById(pendingUserId)
                 .orElseThrow(() -> new EntityNotFoundException("pendingUser not found"));
-
-        if (!team.getLeader().getUserId().equals(leaderId)) {
-            throw new IllegalStateException("Only team leader can approve pending user");
-        }
 
         if (!team.getPendingUsers().contains(pendingUser)) {
             throw new IllegalStateException("no pending request from the user to this team");
@@ -161,6 +173,15 @@ public class TeamService {
 
         teamRepository.save(team);
 
+    }
+
+    public void setCompleteStatus(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("team not found"));
+
+        team.setCompleteStatus(CompleteStatus.COMPLETE);
+
+        teamRepository.save(team);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.bilda_server.response;
 
+import com.example.bilda_server.domain.enums.CompleteStatus;
 import com.example.bilda_server.domain.enums.RecruitmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class TeamResponseDTO {
     private String subjectTitle;
     private String leaderName;
     private RecruitmentStatus recruitmentStatus;
+    private CompleteStatus completeStatus;
     private LocalDate buildStartDate;
     private List<UserResponseDTO> members;
 

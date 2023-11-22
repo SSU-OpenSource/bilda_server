@@ -24,6 +24,7 @@ public class TeamMapper {
                 team.getSubject().getTitle(),
                 team.getLeader().getName(),
                 team.getRecruitmentStatus(),
+                team.getCompleteStatus(),
                 team.getBuildStartDate(),
                 memberDTOs
         );
