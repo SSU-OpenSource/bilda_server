@@ -103,9 +103,17 @@ public class TeamService {
                 .flatMap(t -> t.getPendingUsers().stream())
                 .anyMatch(pendingUser -> pendingUser.equals(user));
 
+        boolean hasTeamInThisSubject = user.getTeams().stream()
+                .anyMatch(t -> t.getSubject().equals(team.getSubject()));
+
+
 
         if(hasPendingRequest){
             throw new IllegalStateException("User already has a pending join request in this subject");
+        }
+
+        if(hasTeamInThisSubject){
+            throw new IllegalStateException("User already is a member of a team in this subject");
         }
 
         if (team.getPendingUsers().contains(user)) {
