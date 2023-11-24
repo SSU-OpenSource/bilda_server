@@ -5,7 +5,7 @@ import com.example.bilda_server.domain.enums.Role;
 import com.example.bilda_server.repository.SubjectRepository;
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.enums.Department;
-import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class DataInitializer {
     private SubjectRepository subjectRepository;
 
     @Autowired
-    private UserJpaRepository userRepository;
+    private UserRepository userRepository;
 
     @PostConstruct
     public void initData() {
@@ -44,8 +44,5 @@ public class DataInitializer {
 
         userRepository.save(user1);
         userRepository.save(user2);
-
     }
-
-
 }

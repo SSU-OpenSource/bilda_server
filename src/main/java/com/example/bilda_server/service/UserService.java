@@ -6,7 +6,7 @@ import com.example.bilda_server.auth.CustomUserDetails;
 import com.example.bilda_server.domain.entity.Tokens;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.jwt.JwtTokenManager;
-import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserRepository;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
 import com.example.bilda_server.request.SignupRequest;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenManager jwtTokenManager;
 

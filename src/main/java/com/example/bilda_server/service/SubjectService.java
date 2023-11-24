@@ -1,7 +1,7 @@
 package com.example.bilda_server.service;
 
 import com.example.bilda_server.repository.SubjectRepository;
-import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserRepository;
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.domain.enums.Department;
@@ -16,7 +16,7 @@ import java.util.List;
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
 
     public List<Subject> findSubjectsByUserDepartment(Long userId) {
         User user = userRepository.findById(userId)

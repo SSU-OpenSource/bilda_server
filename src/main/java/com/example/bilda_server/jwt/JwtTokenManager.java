@@ -7,7 +7,7 @@ import static com.example.bilda_server.utils.ExceptionMessage.INVALID_REFRESH_TO
 
 import com.example.bilda_server.domain.entity.Tokens;
 import com.example.bilda_server.domain.entity.User;
-import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserRepository;
 import com.example.bilda_server.response.AuthorizedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -20,7 +20,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtTokenManager {
 
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private static final String BEARER_MESSAGE = "Bearer ";
 

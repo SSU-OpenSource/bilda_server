@@ -31,7 +31,7 @@ public class EmailController {
     }
 
     @GetMapping("/verify/code")
-    public ResponseEntity getVerify(@RequestParam String email, @RequestParam String authCode)
+    public ResponseEntity<String> getVerify(@RequestParam String email, @RequestParam String authCode)
         throws NotFoundException {
         try {
             emailService.verifyEmail(email, authCode);

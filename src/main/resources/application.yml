@@ -4,10 +4,12 @@ spring:
     username: root
     password: Rjsn937129!
     url: jdbc:mysql://localhost:3306/bilda
+# password : ssu102938!
+# url: jdbc:mysql://db-villian-die.cu19a3s0hesm.ap-northeast-2.rds.amazonaws.com:3306/vilda
 
   jpa:
     hibernate:
-      ddl-auto: update # 옵션은 필요에 따라 변경
+      ddl-auto: create # 옵션은 필요에 따라 변경
     properties:
       hibernate:
         default_batch_fetch_size: 100 # 지연로딩 최적화를 위한 옵션
@@ -60,3 +62,6 @@ springdoc:
   show-actuator: true
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
+
+gpt:
+  token: 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

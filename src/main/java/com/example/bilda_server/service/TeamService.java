@@ -4,7 +4,7 @@ import com.example.bilda_server.mapper.TeamMapper;
 import com.example.bilda_server.mapper.UserMapper;
 import com.example.bilda_server.repository.SubjectRepository;
 import com.example.bilda_server.repository.TeamRepository;
-import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserRepository;
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.entity.Team;
 import com.example.bilda_server.domain.entity.User;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
 
     private final TeamMapper teamMapper;

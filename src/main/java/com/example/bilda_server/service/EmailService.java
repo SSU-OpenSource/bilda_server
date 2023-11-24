@@ -2,12 +2,11 @@ package com.example.bilda_server.service;
 
 import static com.example.bilda_server.utils.ExceptionMessage.*;
 
-import com.example.bilda_server.repository.UserJpaRepository;
+import com.example.bilda_server.repository.UserRepository;
 import com.example.bilda_server.utils.RedisUtil;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,7 +18,7 @@ import org.webjars.NotFoundException;
 public class EmailService {
 
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final RedisUtil redisUtil;
     private final JavaMailSender emailSender;
 

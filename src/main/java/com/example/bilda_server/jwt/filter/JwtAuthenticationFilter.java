@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwtTokenManager.regenerateTokens(response, refreshToken);
         }
 
+        // 둘다 유효하지 않으면 401 에러를 반환
         filterChain.doFilter(request, response);
     }
 
