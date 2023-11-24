@@ -4,6 +4,7 @@ package com.example.bilda_server.controller;
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.response.ResponseDto;
+import com.example.bilda_server.response.SubjectWithTeamStatusDTO;
 import com.example.bilda_server.service.SubjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,8 @@ public class SubjectController {
         "SubjectController"})
     @GetMapping("/{userId}")
     @ResponseBody
-    public ResponseDto<List<Subject>> getSubjects(@PathVariable Long userId) {
-        List<Subject> subjects = subjectService.findSubjectsByUserId(userId);
+    public ResponseDto<List<SubjectWithTeamStatusDTO>> getSubjects(@PathVariable Long userId) {
+        List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(userId);
         return ResponseDto.success("유저가 속해 있는 과목 정보 조회 완료", subjects);
     }
 
