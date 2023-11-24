@@ -184,4 +184,15 @@ public class TeamService {
         teamRepository.save(team);
     }
 
+    public List<TeamResponseDTO> findCompletedTeam(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        return user.getTeams().stream()
+                .filter(team->team.getCompleteStatus() == CompleteStatus.COMPLETE)
+                .map(teamMapper::ToTeamResponseDTO)
+                .collect(Collectors.toList());
+
+    }
+
 }

@@ -163,4 +163,17 @@ public class TeamController {
         teamService.setCompleteStatus(teamId);
         return ResponseEntity.ok(new BaseResponse<>(200, "팀플 종료", null));
     }
+
+    @Operation(summary = "종료된 팀 불러오기", description = "userId를 넘기면 user가 가지고 있는 팀들중 팀플이 완료된 팀들이 불러와집니다.  ", tags = {"TeamController"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Completed teams retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @PostMapping("/{userId}/completed-teams")
+    public ResponseEntity<List<TeamResponseDTO>> getCompletedTeams(@PathVariable Long userId) {
+        List<TeamResponseDTO> completedTeams = teamService.findCompletedTeam(userId);
+        return ResponseEntity.ok(completedTeams);
+    }
+
 }
