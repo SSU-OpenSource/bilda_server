@@ -1,6 +1,7 @@
 package com.example.bilda_server.domain.entity;
 
 import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.domain.enums.EvaluationItem;
 import com.example.bilda_server.domain.enums.Role;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
@@ -11,7 +12,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -52,10 +56,17 @@ public class User {
     )
     private List<Subject> subjects = new ArrayList<>();
 
+    @ElementCollection
+    @CollectionTable(name = "user_evaluation_scores", joinColumns = @JoinColumn(name = "user_id"))
+    @MapKeyEnumerated(EnumType.STRING)
+    @MapKeyColumn(name = "evaluation_item")
+    @Column(name = "score")
+    private Map<EvaluationItem, Integer> evaluationScores = new EnumMap<>(EvaluationItem.class);
+
     @Builder
     public User(Long id, String email, String password, String nickname, String name,
         String studentId,
-        Department department, Page myPage, List<Team> teams, List<Subject> subjects, Role role) {
+        Department department, Page myPage, List<Team> teams, List<Subject> subjects, Role role, Map<EvaluationItem, Integer> evaluationScores) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -67,6 +78,7 @@ public class User {
         this.teams = teams;
         this.subjects = subjects;
         this.role = role;
+        this.evaluationScores = evaluationScores;
     }
 
     public static User create(SignupRequest request, PasswordEncoder passwordEncoder) {
