@@ -34,7 +34,7 @@ public class TeamService {
     private final TeamMapper teamMapper;
     private final UserMapper userMapper;
     @Transactional
-    public Team createTeam(Long leaderId, CreateTeamRequest request) {
+    public TeamResponseDTO createTeam(Long leaderId, CreateTeamRequest request) {
         User leader = userRepository.findById(leaderId)
             .orElseThrow(() -> new EntityNotFoundException("Leader not found"));
         Subject subject = subjectRepository.findById(request.getSubjectId())
@@ -57,7 +57,8 @@ public class TeamService {
             .build();
         teamRepository.save(team);
 
-        return team;
+        return teamMapper.ToTeamResponseDTO(team);
+
     }
 
     public TeamResponseDTO findTeam(Long teamId) {
