@@ -1,5 +1,6 @@
 package com.example.bilda_server.config;
 
+import com.example.bilda_server.domain.entity.Page;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.domain.enums.Role;
 import com.example.bilda_server.repository.SubjectRepository;
@@ -38,12 +39,18 @@ public class DataInitializer {
         subjectRepository.save(subject2);
 
         User user1 = new User(1L, "happy@gmail.com", "super1234!", "홍길동", "gildong", "20230001",
-            Department.COMPUTER, null, null, null, Role.USER);
+            Department.COMPUTER, new Page(), null, null, Role.USER);
+        user1.getMyPage().setUser(user1);
         User user2 = new User(2L, "test@gmail.com", "super1234!", "테스트", "test", "20230002",
-            Department.COMPUTER, null, null, null, Role.USER);
+            Department.COMPUTER, new Page(), null, null, Role.USER);
+        user2.getMyPage().setUser(user2);
+        User user4 = new User(4L, "testo@gmail.com", "super12234!", "철수", "chulsoo", "20230003",
+                Department.COMPUTER, new Page(), null, null, Role.USER);
+        user4.getMyPage().setUser(user2);
 
         userRepository.save(user1);
         userRepository.save(user2);
+        userRepository.save(user4);
 
     }
 
