@@ -1,6 +1,7 @@
 package com.example.bilda_server.domain.entity;
 
 import com.example.bilda_server.domain.enums.Department;
+import com.example.bilda_server.domain.enums.EvaluationItem;
 import com.example.bilda_server.domain.enums.Role;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
@@ -11,7 +12,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

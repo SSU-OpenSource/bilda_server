@@ -3,6 +3,7 @@ package com.example.bilda_server.mapper;
 import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.response.SubjectWithTeamStatusDTO;
+import com.example.bilda_server.response.UserSubjectDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,15 @@ public class SubjectMapper {
                 subject.getProfessor(),
                 subject.getSection(),
                 hasTeam
+        );
+    }
+
+    public UserSubjectDTO toUserSubjectDTO(User user, Subject subject) {
+        return new UserSubjectDTO(
+                user.getId(),
+                subject.getSubjectCode(),
+                subject.getTitle(),
+                subject.getProfessor()
         );
     }
 }

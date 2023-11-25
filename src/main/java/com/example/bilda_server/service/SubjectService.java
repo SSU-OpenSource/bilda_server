@@ -7,6 +7,7 @@ import com.example.bilda_server.domain.entity.Subject;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.domain.enums.Department;
 import com.example.bilda_server.response.SubjectWithTeamStatusDTO;
+import com.example.bilda_server.response.UserSubjectDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class SubjectService {
                 .collect(Collectors.toList());
     }
 
-    public void addUserToSubject(Long subjectCode, Long userId) {
+    public UserSubjectDTO addUserToSubject(Long subjectCode, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new RuntimeException("User not found"));
         Subject subject = subjectRepository.findById(subjectCode)
@@ -53,5 +54,7 @@ public class SubjectService {
 
         user.getSubjects().add(subject);
         userRepository.save(user);
+
+        return subjectMapper.toUserSubjectDTO(user, subject);
     }
 }
