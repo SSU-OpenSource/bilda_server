@@ -1,0 +1,67 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    #    password: Rjsn937129!
+    #    url: jdbc:mysql://localhost:3306/bilda
+    password: ssu102938!
+    url: jdbc:mysql://db-villian-die.cu19a3s0hesm.ap-northeast-2.rds.amazonaws.com:3306/vilda
+
+  jpa:
+    hibernate:
+      ddl-auto: update # 옵션은 필요에 따라 변경
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100 # 지연로딩 최적화를 위한 옵션
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  redis:
+    life: 360
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ssu.villian.die@gmail.com
+    password: fylstgmldoxsjhjj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+jwt:
+  secret-key: NiOeyFbN1Gqo10bPgUyTFsRMkJpGLXSvGP04eFqj5B30r5TcrtlSXfQ7TndvYjNvfkEKLqILn0j1SmKODO1Yw3JpBBgI3nVPEahqxeY8qbPSFGyzyEVxnl4AQcrnVneI
+  issuer: packdev937
+  access:
+    expiration: 3600000 # 1시간 (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
+    header: Authorization
+  refresh:
+    expiration: 1209600000 # 2주 (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
+    header: Authorization-refresh
+
+springdoc:
+  swagger-ui:
+    groups-order: DESC
+    operationsSorter: method
+    display-request-duration: true
+    disable-swagger-default-url: false
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+gpt:
+  token: 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
