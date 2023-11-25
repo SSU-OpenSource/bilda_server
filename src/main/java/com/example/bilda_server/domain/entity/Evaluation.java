@@ -26,6 +26,10 @@ public class Evaluation {
     @JoinColumn(name = "evaluator_user_id")
     private User evaluator; // 평가하는 사용자
 
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team; // 평가가 속한 팀
+
     @ElementCollection
     @CollectionTable(name = "evaluation_scores", joinColumns = @JoinColumn(name = "evaluation_id"))
     @MapKeyEnumerated(EnumType.STRING)
