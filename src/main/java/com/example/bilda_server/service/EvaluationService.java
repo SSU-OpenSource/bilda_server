@@ -39,6 +39,10 @@ public class EvaluationService {
             throw new RuntimeException("Evaluated User's page not found");
         }
 
+        if (evaluationRepository.existsByEvaluatorAndEvaluatedUserAndTeam(evaluatorUser, evaluatedUser, team)) {
+            throw new RuntimeException("Duplicate evaluation not allowed for the same team and user");
+        }
+
         Evaluation evaluation = new Evaluation();
         evaluation.setEvaluatedUser(evaluatedUser);
         evaluation.setEvaluator(evaluatorUser);
