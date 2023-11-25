@@ -148,14 +148,12 @@ public class TeamService {
         team.getPendingUsers().remove(pendingUser);
         team.getUsers().add(pendingUser);
 
-        if (team.getPendingUsers().size() >= team.getMaxMemberNum()) {
+        if (team.getUsers().size() >= team.getMaxMemberNum()) {
             team.setRecruitmentStatus(RecruitmentStatus.BUILDING);
         }
 
         teamRepository.save(team);
 
-        //이건 고민해보자
-        // leader가 팀가입을 수락하면 해당 user의 subject set에서 과목 삭제
     }
 
     @Transactional
