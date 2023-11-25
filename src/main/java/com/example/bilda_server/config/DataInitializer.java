@@ -38,7 +38,7 @@ public class DataInitializer {
         subjectRepository.save(subject1);
         subjectRepository.save(subject2);
 
-        /*User user1 = new User(1L, "happy@gmail.com", "super1234!", "홍길동", "gildong", "20230001",
+        User user1 = new User(1L, "happy@gmail.com", "super1234!", "홍길동", "gildong", "20230001",
             Department.COMPUTER, new Page(), null, null, Role.USER);
         user1.getMyPage().setUser(user1);
         User user2 = new User(2L, "test@gmail.com", "super1234!", "테스트", "test", "20230002",
@@ -46,7 +46,7 @@ public class DataInitializer {
         user2.getMyPage().setUser(user2);
 
         userRepository.save(user1);
-        userRepository.save(user2);*/
+        userRepository.save(user2);
 
     }
 
