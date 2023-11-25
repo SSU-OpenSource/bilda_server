@@ -10,10 +10,16 @@ import com.example.bilda_server.repository.PageRepository;
 import com.example.bilda_server.repository.TeamRepository;
 import com.example.bilda_server.repository.UserJpaRepository;
 import com.example.bilda_server.request.EvaluationRequestDTO;
+import com.example.bilda_server.response.TeamMemberEvaluationDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.swing.text.StyledEditorKit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +59,28 @@ public class EvaluationService {
 
         evaluationRepository.save(evaluation);
         pageRepository.save(evaluatedUserPage);
+
+    }
+
+    public List<TeamMemberEvaluationDTO> getEvaluationStatusOfTeamMembers(Long userId, Long teamId) {
+        User evaluator = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("Team not found"));
+
+        List<Evaluation> evaluations = evaluationRepository.findByEvaluatorAndTeam(evaluator, team);
+
+        List<TeamMemberEvaluationDTO> evaluationStatuses = new ArrayList<>();
+        for (User member : team.getUsers()) {
+            if (!member.equals(evaluator)) {
+                boolean hasEvaluated = evaluations.stream()
+                        .anyMatch(evaluation -> evaluation.getEvaluatedUser().equals(member));
+                evaluationStatuses.add(new TeamMemberEvaluationDTO(member.getId(), member.getName(), hasEvaluated));
+            }
+        }
+
+        return evaluationStatuses;
 
     }
 
