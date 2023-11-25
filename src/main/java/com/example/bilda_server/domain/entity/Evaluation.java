@@ -1,8 +1,11 @@
 package com.example.bilda_server.domain.entity;
 
 
+import com.example.bilda_server.domain.enums.EvaluationItem;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Map;
 
 @Getter
 @Setter
@@ -23,6 +26,10 @@ public class Evaluation {
     @JoinColumn(name = "evaluator_user_id")
     private User evaluator; // 평가하는 사용자
 
-    private int score; // 평가 점수
-    private String comment; // 평가 코멘트
+    @ElementCollection
+    @CollectionTable(name = "evaluation_scores", joinColumns = @JoinColumn(name = "evaluation_id"))
+    @MapKeyEnumerated(EnumType.STRING)
+    @Column(name = "score")
+    private Map<EvaluationItem, Integer> scores; // 평가 항목별 점수
+
 }
