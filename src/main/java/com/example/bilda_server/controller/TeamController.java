@@ -78,7 +78,6 @@ public class TeamController {
 
     @Operation(summary = "팀 생성하기", description = "Http request body를 이용하여 리더가 팀을 생성할 수 있습니다. ", tags = {
         "TeamController"})
-
     @PostMapping("/create/{leaderId}")
     public ResponseDto<Void> createTeam(
         @PathVariable Long leaderId,
@@ -103,7 +102,6 @@ public class TeamController {
     @Operation(summary = "팀 조인 요청 거절하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 leader가 join요청을 거절할 수 있습니다. ", tags = {
         "TeamController"})
     @PostMapping("{teamId}/reject/{pendingUserId}")
-
     public ResponseDto<Void> rejectJoinRequest(
         @PathVariable Long teamId,
         @PathVariable Long pendingUserId
