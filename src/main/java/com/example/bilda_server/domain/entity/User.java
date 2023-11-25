@@ -56,13 +56,6 @@ public class User {
     )
     private List<Subject> subjects = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "user_evaluation_scores", joinColumns = @JoinColumn(name = "user_id"))
-    @MapKeyEnumerated(EnumType.STRING)
-    @MapKeyColumn(name = "evaluation_item")
-    @Column(name = "score")
-    private Map<EvaluationItem, Integer> evaluationScores = new EnumMap<>(EvaluationItem.class);
-
     @Builder
     public User(Long id, String email, String password, String nickname, String name,
         String studentId,
