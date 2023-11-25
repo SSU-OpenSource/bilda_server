@@ -46,7 +46,7 @@ public class DataInitializer {
         user2.getMyPage().setUser(user2);
         User user4 = new User(4L, "testo@gmail.com", "super12234!", "철수", "chulsoo", "20230003",
                 Department.COMPUTER, new Page(), null, null, Role.USER);
-        user4.getMyPage().setUser(user2);
+        user4.getMyPage().setUser(user4);
 
         userRepository.save(user1);
         userRepository.save(user2);
