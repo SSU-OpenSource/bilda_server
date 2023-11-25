@@ -2,9 +2,8 @@ package com.example.bilda_server.controller;
 
 
 import com.example.bilda_server.domain.entity.Subject;
-import com.example.bilda_server.domain.entity.User;
-import com.example.bilda_server.response.AuthorizedResponse;
 import com.example.bilda_server.response.BaseResponse;
+import com.example.bilda_server.response.ResponseDto;
 import com.example.bilda_server.response.SubjectWithTeamStatusDTO;
 import com.example.bilda_server.response.UserSubjectDTO;
 import com.example.bilda_server.service.SubjectService;
@@ -39,9 +38,9 @@ public class SubjectController {
     })
     @GetMapping("/department/{userId}")
     @ResponseBody
-    public ResponseEntity<List<Subject>> getSubjectsByDepartment(@PathVariable Long userId) {
+    public ResponseDto<List<Subject>> getSubjectsByDepartment(@PathVariable Long userId) {
         List<Subject> subjects = subjectService.findSubjectsByUserDepartment(userId);
-        return ResponseEntity.ok(subjects);
+        return ResponseDto.success("과목 정보 조회 완료", subjects);
     }
 
     @Operation(summary = "유저가 속해있는 과목정보 가져오기", description = "userId를 pathVariable로 넘기면 유저가 듣고있는 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
@@ -52,11 +51,12 @@ public class SubjectController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
+
     @GetMapping("/{userId}")
     @ResponseBody
-    public ResponseEntity<List<SubjectWithTeamStatusDTO>> getSubjects(@PathVariable Long userId) {
+    public ResponseDto<List<SubjectWithTeamStatusDTO>> getSubjects(@PathVariable Long userId) {
         List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(userId);
-        return ResponseEntity.ok(subjects);
+        return ResponseDto.success("유저가 속해 있는 과목 정보 조회 완료", subjects);
     }
 
     @Operation(summary = "유저가 듣고 있는 과목 추가하기", description = "userId와 SubjectId를 pathVariable로 넘기면 유저가 듣고 있는 과목을 추가할 수 있습니다.  ", tags = {"SubjectController"})
@@ -71,6 +71,6 @@ public class SubjectController {
     public ResponseEntity<BaseResponse<UserSubjectDTO>> addSubjectToUser(@PathVariable Long userId, @PathVariable Long subjectCode) {
         UserSubjectDTO userSubjectDTO = subjectService.addUserToSubject(subjectCode, userId);
         return ResponseEntity.ok(new BaseResponse<>(200, "유저의 과목 추가 성공", userSubjectDTO));
-    }
 
+    }
 }

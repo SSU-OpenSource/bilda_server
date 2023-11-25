@@ -38,9 +38,9 @@ public class DataInitializer {
         subjectRepository.save(subject2);
 
         User user1 = new User(1L, "happy@gmail.com", "super1234!", "홍길동", "gildong", "20230001",
-            Department.COMPUTER, null, null, null, Role.USER, null);
+            Department.COMPUTER, null, null, null, Role.USER);
         User user2 = new User(2L, "test@gmail.com", "super1234!", "테스트", "test", "20230002",
-            Department.COMPUTER, null, null, null, Role.USER, null);
+            Department.COMPUTER, null, null, null, Role.USER);
 
         userRepository.save(user1);
         userRepository.save(user2);
