@@ -66,7 +66,7 @@ public class User {
     @Builder
     public User(Long id, String email, String password, String nickname, String name,
         String studentId,
-        Department department, Page myPage, List<Team> teams, List<Subject> subjects, Role role, Map<EvaluationItem, Integer> evaluationScores) {
+        Department department, Page myPage, List<Team> teams, List<Subject> subjects, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -78,7 +78,6 @@ public class User {
         this.teams = teams;
         this.subjects = subjects;
         this.role = role;
-        this.evaluationScores = evaluationScores;
     }
 
     public static User create(SignupRequest request, PasswordEncoder passwordEncoder) {
