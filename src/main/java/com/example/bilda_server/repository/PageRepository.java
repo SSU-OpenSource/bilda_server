@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PageRepository extends JpaRepository<Page, Long> {
-
+    Page findByUserId(Long userId);
 }
