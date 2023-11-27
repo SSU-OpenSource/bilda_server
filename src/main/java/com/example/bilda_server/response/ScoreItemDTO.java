@@ -9,6 +9,6 @@ public class ScoreItemDTO {
 
     private String evaluationItemName;
     private double averageScore;
-
+    private int highScoreCount;
 
 }

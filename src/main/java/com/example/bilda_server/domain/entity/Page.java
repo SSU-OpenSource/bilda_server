@@ -48,16 +48,25 @@ public class Page {
         return evaluationScore !=null ? evaluationScore.getAverage() : 0;
     }
 
+    public int getHighScoreCount(EvaluationItem item) {
+        EvaluationScore evaluationScore = evaluationScores.get(item);
+        return evaluationScore !=null ? evaluationScore.getHighScoreCount() : 0;
+    }
+
     @Embeddable
     @Getter
     @Setter
     public static class EvaluationScore{
         private int totalScore;
         private int count;
+        private int highScoreCount; //80점 이상인 평가의 수
 
         public void addScore(int score){
             this.totalScore +=  score;
             this.count++;
+            if (score >= 80) {
+                this.highScoreCount++;
+            }
         }
 
         public double getAverage() {
