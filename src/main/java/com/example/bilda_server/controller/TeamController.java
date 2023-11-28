@@ -78,50 +78,67 @@ public class TeamController {
 
     @Operation(summary = "팀 생성하기", description = "Http request body를 이용하여 리더가 팀을 생성할 수 있습니다. ", tags = {
         "TeamController"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Team created successfully",
+                    content = @Content(schema = @Schema(implementation = TeamResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Leader or Subject not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
     @PostMapping("/create/{leaderId}")
-    public ResponseDto<Void> createTeam(
+    public ResponseEntity<BaseResponse<TeamResponseDTO>> createTeam(
         @PathVariable Long leaderId,
         @RequestBody CreateTeamRequest request) {
 
         TeamResponseDTO team = teamService.createTeam(leaderId, request);
-        return ResponseDto.success();
+        return ResponseEntity.ok(new BaseResponse<>(200, "팀 생성", team));
     }
 
     @Operation(summary = "팀 조인 요청 수락하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 leader가 join요청을 수락할 수 있습니다. 조인을 수락했을 때 해당 팀의 인원수가 초기 설정한 max인원수와 같아지면 team의 모집 상태는 모집 완료로 바뀌게 됩니다.", tags = {
         "TeamController"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Join request approved successfully"),
+            @ApiResponse(responseCode = "404", description = "Team or pending user not found"),
+            @ApiResponse(responseCode = "400", description = "No pending request from the user to this team"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
     @PostMapping("{teamId}/approve/{pendingUserId}")
-    public ResponseDto<Void> approveJoinRequest(
+    public ResponseEntity<BaseResponse<Void>> approveJoinRequest(
         @PathVariable Long teamId,
         @PathVariable Long pendingUserId
     ) {
         teamService.approvePendingUser(teamId, pendingUserId);
-        return ResponseDto.success();
+        return ResponseEntity.ok(new BaseResponse<>(200, "팀 조인 요청 수락", null));
 
     }
 
     @Operation(summary = "팀 조인 요청 거절하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 leader가 join요청을 거절할 수 있습니다. ", tags = {
         "TeamController"})
     @PostMapping("{teamId}/reject/{pendingUserId}")
-    public ResponseDto<Void> rejectJoinRequest(
+    public ResponseEntity<BaseResponse<Void>> rejectJoinRequest(
         @PathVariable Long teamId,
         @PathVariable Long pendingUserId
     ) {
         teamService.rejectPendingUser(teamId, pendingUserId);
-        return ResponseDto.success();
+        return ResponseEntity.ok(new BaseResponse<>(200, "팀 조인 요청 거절", null));
     }
 
 
     @Operation(summary = "팀에 조인 요청하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 해당 팀에 사용자가 조인 요청을 할 수 있습니다. ", tags = {
         "TeamController"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Pending users retrieved successfully",
+                    content = @Content(schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "404", description = "Team not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
     @PostMapping("/{teamId}/join/{userId}")
-    public ResponseDto<Void> requestJoinTeam(
+    public ResponseEntity<BaseResponse<Void>> requestJoinTeam(
         @PathVariable Long teamId,
         @PathVariable Long userId
     ) {
         teamService.addPendingUserToTeam(teamId, userId);
-        return ResponseDto.success();
+        return ResponseEntity.ok(new BaseResponse<>(200, "팀 조인 요청 완료", null));
     }
-
     @Operation(summary = "팀 조인 요청 확인하기", description = "TeamId를 pathVariable로 넘기면 해당 팀에 조인 요청을 보낸 사용자들이 불러와집니다 ", tags = {
         "TeamController"})
     @GetMapping("/{teamId}/recruit")
