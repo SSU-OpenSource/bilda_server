@@ -1,5 +1,6 @@
 package com.example.bilda_server.controller;
 
+import com.example.bilda_server.auth.CustomUserDetails;
 import com.example.bilda_server.domain.entity.Team;
 import com.example.bilda_server.request.CreateTeamRequest;
 import com.example.bilda_server.response.*;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,11 +53,11 @@ public class TeamController {
     })
     @Operation(summary = "User가 속해있는 팀들의 정보를 가져옵니다.", description = "userId를 pathVariable로 넘기면 해당 팀들에 대한 정보가 나옵니다. ", tags = {"TeamController"})
     @ResponseBody
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     public ResponseDto<List<TeamResponseDTO>> getTeams(
-        @PathVariable Long userId
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        List<TeamResponseDTO> teams = teamService.findTeamsByUserId(userId);
+        List<TeamResponseDTO> teams = teamService.findTeamsByUserId(userDetails.getId());
         return ResponseDto.success("유저가 속해있는 팀 정보 조회 완료", teams);
     }
 
@@ -84,16 +86,16 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Leader or Subject not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @PostMapping("/create/{leaderId}")
+    @PostMapping("/create")
     public ResponseEntity<BaseResponse<TeamResponseDTO>> createTeam(
-        @PathVariable Long leaderId,
-        @RequestBody CreateTeamRequest request) {
+        @RequestBody CreateTeamRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        TeamResponseDTO team = teamService.createTeam(leaderId, request);
+        TeamResponseDTO team = teamService.createTeam(userDetails.getId(), request);
         return ResponseEntity.ok(new BaseResponse<>(200, "팀 생성", team));
     }
 
-    @Operation(summary = "팀 조인 요청 수락하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 leader가 join요청을 수락할 수 있습니다. 조인을 수락했을 때 해당 팀의 인원수가 초기 설정한 max인원수와 같아지면 team의 모집 상태는 모집 완료로 바뀌게 됩니다.", tags = {
+    @Operation(summary = "팀 조인 요청 수락하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 leader가 join요청을 수락할 수 있습니다. userId는 팀 조인 요청을 확인하는 api를 통해 가져와 주세요 조인을 수락했을 때 해당 팀의 인원수가 초기 설정한 max인원수와 같아지면 team의 모집 상태는 모집 완료로 바뀌게 됩니다.", tags = {
         "TeamController"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Join request approved successfully"),
@@ -125,12 +127,12 @@ public class TeamController {
 
     @Operation(summary = "팀에 조인 요청하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 해당 팀에 사용자가 조인 요청을 할 수 있습니다. ", tags = {
         "TeamController"})
-    @PostMapping("/{teamId}/join/{userId}")
+    @PostMapping("/{teamId}/join")
     public ResponseEntity<BaseResponse<Void>> requestJoinTeam(
         @PathVariable Long teamId,
-        @PathVariable Long userId
+        @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        teamService.addPendingUserToTeam(teamId, userId);
+        teamService.addPendingUserToTeam(teamId, userDetails.getId());
         return ResponseEntity.ok(new BaseResponse<>(200, "팀 조인 요청 완료", null));
     }
     @Operation(summary = "팀 조인 요청 확인하기", description = "TeamId를 pathVariable로 넘기면 해당 팀에 조인 요청을 보낸 사용자들이 불러와집니다 ", tags = {
@@ -156,15 +158,15 @@ public class TeamController {
 
     }
 
-    @Operation(summary = "종료된 팀 불러오기", description = "userId를 넘기면 user가 가지고 있는 팀들중 팀플이 완료된 팀들이 불러와집니다.  ", tags = {"TeamController"})
+    @Operation(summary = "종료된 팀 불러오기", description = "user가 가지고 있는 팀들중 팀플이 완료된 팀들이 불러와집니다.  ", tags = {"TeamController"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Completed teams retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @PostMapping("/{userId}/completed-teams")
-    public ResponseEntity<List<TeamResponseDTO>> getCompletedTeams(@PathVariable Long userId) {
-        List<TeamResponseDTO> completedTeams = teamService.findCompletedTeam(userId);
+    @PostMapping("/completed-teams")
+    public ResponseEntity<List<TeamResponseDTO>> getCompletedTeams(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<TeamResponseDTO> completedTeams = teamService.findCompletedTeam(userDetails.getId());
         return ResponseEntity.ok(completedTeams);
     }
 
