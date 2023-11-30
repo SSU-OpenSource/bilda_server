@@ -51,7 +51,6 @@ public class SubjectController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-
     @GetMapping("/{userId}")
     @ResponseBody
     public ResponseDto<List<SubjectWithTeamStatusDTO>> getSubjects(@PathVariable Long userId) {

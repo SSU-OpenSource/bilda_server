@@ -125,12 +125,6 @@ public class TeamController {
 
     @Operation(summary = "팀에 조인 요청하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 해당 팀에 사용자가 조인 요청을 할 수 있습니다. ", tags = {
         "TeamController"})
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Pending users retrieved successfully",
-                    content = @Content(schema = @Schema(implementation = List.class))),
-            @ApiResponse(responseCode = "404", description = "Team not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
-    })
     @PostMapping("/{teamId}/join/{userId}")
     public ResponseEntity<BaseResponse<Void>> requestJoinTeam(
         @PathVariable Long teamId,
@@ -142,12 +136,12 @@ public class TeamController {
     @Operation(summary = "팀 조인 요청 확인하기", description = "TeamId를 pathVariable로 넘기면 해당 팀에 조인 요청을 보낸 사용자들이 불러와집니다 ", tags = {
         "TeamController"})
     @GetMapping("/{teamId}/recruit")
-    public ResponseDto<List<PendingUserDTO>> getPendingUsersByTeamId(
+    public ResponseEntity<BaseResponse<List<PendingUserDTO>>> getPendingUsersByTeamId(
         @PathVariable Long teamId
     ) {
 
         List<PendingUserDTO> pendingUsers = teamService.getPendingUsers(teamId);
-        return ResponseDto.success("팀 종인 요청 확인", pendingUsers);
+        return ResponseEntity.ok(new BaseResponse<>(200, "팀 조인 요청 확인", pendingUsers));
     }
 
 
