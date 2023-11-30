@@ -44,7 +44,7 @@ public class TeamController {
 
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = TeamResponseDTO[].class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "USER NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
@@ -62,7 +62,7 @@ public class TeamController {
     @Operation(summary = "과목에 해당하는 팀들의 정보 가져오기", description = "SubjectId를 pahtvariable로 넘기면 해당 과목에 대해 개설된 팀들의 정보가 나옵니다. recruitmentStatus로 분기 처리해주시면 됩니다. ", tags = {"TeamController"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Teams of subject retrieved successfully",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = TeamsOfSubjectDTO[].class))),
             @ApiResponse(responseCode = "404", description = "Subject not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
@@ -114,12 +114,12 @@ public class TeamController {
     @Operation(summary = "팀 조인 요청 거절하기", description = "TeamId와 팀에 추가할 userId를 pathVariable로 넘기면 leader가 join요청을 거절할 수 있습니다. ", tags = {
         "TeamController"})
     @PostMapping("{teamId}/reject/{pendingUserId}")
-    public ResponseEntity<BaseResponse<Void>> rejectJoinRequest(
+    public ResponseDto<Void> rejectJoinRequest(
         @PathVariable Long teamId,
         @PathVariable Long pendingUserId
     ) {
         teamService.rejectPendingUser(teamId, pendingUserId);
-        return ResponseEntity.ok(new BaseResponse<>(200, "팀 조인 요청 거절", null));
+        return ResponseDto.success( "팀 조인 요청 거절", null);
     }
 
 

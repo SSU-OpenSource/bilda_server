@@ -31,7 +31,7 @@ public class SubjectController {
     @Operation(summary = "유저가 속해있는 학과에 개설된 과목정보 가져오기", description = "userId를 pathVariable로 넘기면 유저가 속해있는 과에 개설된 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = Subject[].class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
@@ -46,7 +46,7 @@ public class SubjectController {
     @Operation(summary = "유저가 속해있는 과목정보 가져오기", description = "userId를 pathVariable로 넘기면 유저가 듣고있는 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = SubjectWithTeamStatusDTO[].class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
