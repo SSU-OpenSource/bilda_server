@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -43,8 +45,14 @@ public class SubjectController {
     public ResponseDto<List<Subject>> getSubjectsByDepartment(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        List<Subject> subjects = subjectService.findSubjectsByUserDepartment(userDetails.getId());
-        return ResponseDto.success("과목 정보 조회 완료", subjects);
+
+        try{
+            List<Subject> subjects = subjectService.findSubjectsByUserDepartment(userDetails.getId());
+            return ResponseDto.success("과목 정보 조회 완료", subjects);
+        }catch (EntityNotFoundException ex) {
+            return ResponseDto.fail(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+
     }
 
     @Operation(summary = "유저가 속해있는 과목정보 가져오기", description = "유저가 듣고있는 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
@@ -58,8 +66,14 @@ public class SubjectController {
     @GetMapping("")
     @ResponseBody
     public ResponseDto<List<SubjectWithTeamStatusDTO>> getSubjects(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(userDetails.getId());
-        return ResponseDto.success("유저가 속해 있는 과목 정보 조회 완료", subjects);
+
+        try{
+            List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(userDetails.getId());
+            return ResponseDto.success("유저가 속해 있는 과목 정보 조회 완료", subjects);
+        }catch (EntityNotFoundException ex) {
+            return ResponseDto.fail(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+
     }
 
     @Operation(summary = "유저가 듣고 있는 과목 추가하기", description = "SubjectId를 pathVariable로 넘기면 유저가 듣고 있는 과목을 추가할 수 있습니다.  ", tags = {"SubjectController"})
@@ -74,8 +88,19 @@ public class SubjectController {
     public ResponseEntity<BaseResponse<UserSubjectDTO>> addSubjectToUser(
             @PathVariable Long subjectCode,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        UserSubjectDTO userSubjectDTO = subjectService.addUserToSubject(subjectCode, userDetails.getId());
-        return ResponseEntity.ok(new BaseResponse<>(200, "유저의 과목 추가 성공", userSubjectDTO));
+        try{
+            UserSubjectDTO userSubjectDTO = subjectService.addUserToSubject(subjectCode, userDetails.getId());
+            return ResponseEntity.ok(new BaseResponse<>(200, "유저의 과목 추가 성공", userSubjectDTO));
+        }catch (EntityNotFoundException ex) {
+            return new ResponseEntity<>(new BaseResponse<>(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null), HttpStatus.NOT_FOUND);
+        }catch (IllegalStateException ex) {
+            // IllegalStateException 발생 시
+            return new ResponseEntity<>(new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), null), HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            // 그 외 일반 예외 발생 시
+            return new ResponseEntity<>(new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 내부 오류", null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
 
     }
 }
