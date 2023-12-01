@@ -75,13 +75,14 @@ public class User {
 
     public static User create(SignupRequest request, PasswordEncoder passwordEncoder) {
         return User.builder()
-            .email(request.email())
-            .password(passwordEncoder.encode(request.password()))
-            .name(request.name())
-            .studentId(request.studentId())
-            .nickname(request.nickname())
-            .department(request.department())
-            .build();
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .name(request.name())
+                .studentId(request.studentId())
+                .nickname(request.nickname())
+                .department(request.department())
+                .myPage(new Page())
+                .build();
     }
 
     public void changePassword(ChangePasswordRequest changePasswordRequest) {

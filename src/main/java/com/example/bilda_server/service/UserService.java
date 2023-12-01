@@ -31,6 +31,7 @@ public class UserService {
     @Transactional
     public SignupResponse signup(SignupRequest request) {
         User newUser = User.create(request, passwordEncoder);
+        newUser.getMyPage().setUser(newUser);
 
         userRepository.findByEmail(newUser.getEmail()).ifPresent(user -> {
 	throw new IllegalArgumentException("이미 가입된 이메일 입니다.");

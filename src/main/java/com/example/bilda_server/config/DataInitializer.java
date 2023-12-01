@@ -49,6 +49,4 @@ public class DataInitializer {
         userRepository.save(user2);
 
     }
-
-
 }

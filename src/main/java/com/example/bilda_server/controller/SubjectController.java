@@ -61,7 +61,7 @@ public class SubjectController {
         @ApiResponse(responseCode = "404", description = "NOT FOUND"),
         @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-    @PostMapping("/{userId}/add/{subjectCode}")
+    @PostMapping("/add/{subjectCode}")
     public ResponseEntity<BaseResponse<UserSubjectDTO>> addSubjectToUser(
         @PathVariable Long subjectCode,
         @AuthenticationPrincipal CustomUserDetails userDetails) {

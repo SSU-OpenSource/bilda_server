@@ -32,10 +32,6 @@ public class Page {
     @MapKeyColumn(name = "evaluation_item")
     private Map<EvaluationItem, EvaluationScore> evaluationScores = new EnumMap<>(EvaluationItem.class);
 
-    public Page(User user) {
-        this.user = user;
-    }
-
 
     public void addEvaluationScore(EvaluationItem item, int score) {
         EvaluationScore evaluationScore = evaluationScores.getOrDefault(item, new EvaluationScore());
