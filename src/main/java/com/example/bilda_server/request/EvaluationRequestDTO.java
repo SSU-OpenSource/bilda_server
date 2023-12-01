@@ -11,7 +11,6 @@ import java.util.Map;
 public class EvaluationRequestDTO {
 
     private Long evaluatedUserId;
-    private Long evaluatorUserId;
     private Long teamId;
     private Map<EvaluationItem, Integer> scores;
 

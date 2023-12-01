@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -150,6 +151,7 @@ public class TeamService {
 
         if (team.getUsers().size() >= team.getMaxMemberNum()) {
             team.setRecruitmentStatus(RecruitmentStatus.BUILDING);
+            team.setBuildStartDate(LocalDate.now());
         }
 
         teamRepository.save(team);

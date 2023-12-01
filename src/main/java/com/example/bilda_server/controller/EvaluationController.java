@@ -1,6 +1,7 @@
 package com.example.bilda_server.controller;
 
 
+import com.example.bilda_server.auth.CustomUserDetails;
 import com.example.bilda_server.request.EvaluationRequestDTO;
 import com.example.bilda_server.response.ResponseDto;
 import com.example.bilda_server.response.TeamMemberEvaluationDTO;
@@ -8,6 +9,7 @@ import com.example.bilda_server.service.EvaluationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +24,11 @@ public class EvaluationController {
     @Operation(summary = "평가 생성하기", description = "Http request body를 이용하여 평가를 생성할 수 있습니다. ", tags = {
             "EvaluationController"})
     @PostMapping("/create")
-    public ResponseDto<Void> createEvaluation(@RequestBody EvaluationRequestDTO evaluationDTO) {
-        evaluationService.createAndReflectEvaluation(evaluationDTO);
+    public ResponseDto<Void> createEvaluation(
+            @RequestBody EvaluationRequestDTO evaluationDTO,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        evaluationService.createAndReflectEvaluation(evaluationDTO, userDetails.getId());
         return ResponseDto.success("평가 반영 완료");
     }
 
@@ -31,9 +36,10 @@ public class EvaluationController {
             "EvaluationController"})
     @GetMapping("/status/{teamId}")
     public ResponseEntity<List<TeamMemberEvaluationDTO>> getEvaluationStatus(
-            @RequestParam Long userId, @PathVariable Long teamId
+            @PathVariable Long teamId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        List<TeamMemberEvaluationDTO> evaluationStatus = evaluationService.getEvaluationStatusOfTeamMembers(userId, teamId);
+        List<TeamMemberEvaluationDTO> evaluationStatus = evaluationService.getEvaluationStatusOfTeamMembers(userDetails.getId(), teamId);
         return ResponseEntity.ok(evaluationStatus);
     }
 

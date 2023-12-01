@@ -24,7 +24,7 @@ public class PageService {
         User user = page.getUser();
 
         List<ScoreItemDTO> scoreItems = Arrays.stream(EvaluationItem.values())
-                .map(item -> new ScoreItemDTO(item.getDescription(), page.getAverageScore(item)))
+                .map(item -> new ScoreItemDTO(item.getDescription(), page.getAverageScore(item), page.getHighScoreCount(item)))
                 .toList();
 
         return new PageAverageDTO(user.getId(), user.getName(), scoreItems);

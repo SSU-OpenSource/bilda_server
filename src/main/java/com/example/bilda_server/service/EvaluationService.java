@@ -31,10 +31,10 @@ public class EvaluationService {
     private final TeamRepository teamRepository;
 
     @Transactional
-    public void createAndReflectEvaluation(EvaluationRequestDTO evaluationRequestDTO) {
+    public void createAndReflectEvaluation(EvaluationRequestDTO evaluationRequestDTO, Long evaluatorUserId) {
         User evaluatedUser = userRepository.findById(evaluationRequestDTO.getEvaluatedUserId())
                 .orElseThrow(() -> new EntityNotFoundException("Evaluated User not found"));
-        User evaluatorUser = userRepository.findById(evaluationRequestDTO.getEvaluatorUserId())
+        User evaluatorUser = userRepository.findById(evaluatorUserId)
                 .orElseThrow(() -> new EntityNotFoundException("Evaluator User not found"));
 
         Team team = teamRepository.findById(evaluationRequestDTO.getTeamId())
