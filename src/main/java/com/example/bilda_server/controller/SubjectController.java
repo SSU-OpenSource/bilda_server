@@ -30,52 +30,43 @@ public class SubjectController {
 
     private final SubjectService subjectService;
 
-    @Operation(summary = "유저가 속해있는 학과에 개설된 과목정보 가져오기", description = "유저가 속해있는 과에 개설된 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = Subject[].class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-    })
+    @Operation(summary = "유저가 속해있는 학과에 개설된 과목정보 가져오기", description = "유저가 속해있는 과에 개설된 과목정보를 가져올 수 있습니다.  ", tags = {
+        "SubjectController"})
     @GetMapping("/departments")
     @ResponseBody
     public ResponseDto<List<Subject>> getSubjectsByDepartment(
-            @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         List<Subject> subjects = subjectService.findSubjectsByUserDepartment(userDetails.getId());
         return ResponseDto.success("과목 정보 조회 완료", subjects);
     }
 
-    @Operation(summary = "유저가 속해있는 과목정보 가져오기", description = "유저가 듣고있는 과목정보를 가져올 수 있습니다.  ", tags = {"SubjectController"})
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = SubjectWithTeamStatusDTO[].class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-    })
+    @Operation(summary = "유저가 속해있는 과목정보 가져오기", description = "유저가 듣고있는 과목정보를 가져올 수 있습니다.  ", tags = {
+        "SubjectController"})
     @GetMapping("")
     @ResponseBody
-    public ResponseDto<List<SubjectWithTeamStatusDTO>> getSubjects(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(userDetails.getId());
+    public ResponseDto<List<SubjectWithTeamStatusDTO>> getSubjects(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<SubjectWithTeamStatusDTO> subjects = subjectService.findSubjectsByUserId(
+            userDetails.getId());
         return ResponseDto.success("유저가 속해 있는 과목 정보 조회 완료", subjects);
     }
 
-    @Operation(summary = "유저가 듣고 있는 과목 추가하기", description = "SubjectId를 pathVariable로 넘기면 유저가 듣고 있는 과목을 추가할 수 있습니다.  ", tags = {"SubjectController"})
+    @Operation(summary = "유저가 듣고 있는 과목 추가하기", description = "SubjectId를 pathVariable로 넘기면 유저가 듣고 있는 과목을 추가할 수 있습니다.  ", tags = {
+        "SubjectController"})
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(schema = @Schema(implementation = UserSubjectDTO.class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+        @ApiResponse(responseCode = "200", description = "OK",
+            content = @Content(schema = @Schema(implementation = UserSubjectDTO.class))),
+        @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+        @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+        @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/{userId}/add/{subjectCode}")
     public ResponseEntity<BaseResponse<UserSubjectDTO>> addSubjectToUser(
-            @PathVariable Long subjectCode,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        UserSubjectDTO userSubjectDTO = subjectService.addUserToSubject(subjectCode, userDetails.getId());
+        @PathVariable Long subjectCode,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserSubjectDTO userSubjectDTO = subjectService.addUserToSubject(subjectCode,
+            userDetails.getId());
         return ResponseEntity.ok(new BaseResponse<>(200, "유저의 과목 추가 성공", userSubjectDTO));
-
     }
 }
