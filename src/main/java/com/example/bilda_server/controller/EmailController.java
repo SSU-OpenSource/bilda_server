@@ -32,8 +32,8 @@ public class EmailController {
 
     private final EmailService emailService;
 
-    @Operation(summary = "이메일 전송", description = "인증을 위한 이메일을 전송합니다. 인증 코드 ㅇ비력 후 /verify/code 요청을 보내면 유효한 코드 인지 알 수 있습니다.")
-    @Parameter(name = "email", description = "인증 코드를 보낼 이메일 주소 입니다.", in = ParameterIn.QUERY)
+    @Operation(summary = "이메일 전송", description = "인증을 위한 이메일을 전송합니다. 인증 코드 ㅇ비력 후 /verify/code 요청을 보내면 유효한 코드 인지 알 수 있습니다.", tags = {
+        "EmailController"})
     @GetMapping("/verify")
     public ResponseDto<Void> verify(@RequestBody VerifyEmailRequest verifyEmailRequest)
         throws RuntimeException {
@@ -45,9 +45,8 @@ public class EmailController {
         }
     }
 
-    @Operation(summary = "이메일 인증", description = "이메일로부터 전송받은 인증 코드를 인증합니다. result 값이 true면 인증이 완료된 것입니다.")
-    @Parameter(name = "email", description = "인증 코드를 받은 email 주소")
-    @Parameter(name = "authCode", description = "인증 코드")
+    @Operation(summary = "이메일 인증", description = "이메일로부터 전송받은 인증 코드를 인증합니다. result 값이 true면 인증이 완료된 것입니다.", tags = {
+        "EmailController"})
     @GetMapping("/verify/code")
     public ResponseDto<Void> getVerify(@RequestBody VerifyAuthCodeRequest verifyAuthCodeRequest)
         throws NotFoundException {
