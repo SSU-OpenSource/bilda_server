@@ -25,7 +25,7 @@ public class SubjectService {
 
     public List<Subject> findSubjectsByUserDepartment(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         Department department = user.getDepartment();
         return subjectRepository.findByDepartmentsContaining(department);
@@ -44,9 +44,9 @@ public class SubjectService {
 
     public UserSubjectDTO addUserToSubject(Long subjectCode, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("User not found"));
+                .orElseThrow(()->new EntityNotFoundException("User not found"));
         Subject subject = subjectRepository.findById(subjectCode)
-                .orElseThrow(() -> new RuntimeException("Subject not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
 
         if (user.getSubjects().contains(subject)) {
             throw new IllegalStateException("User already add the Subject");
