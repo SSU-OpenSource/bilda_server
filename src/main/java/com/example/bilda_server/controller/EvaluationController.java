@@ -36,9 +36,10 @@ public class EvaluationController {
             "EvaluationController"})
     @GetMapping("/status/{teamId}")
     public ResponseEntity<List<TeamMemberEvaluationDTO>> getEvaluationStatus(
-            @RequestParam Long userId, @PathVariable Long teamId
+            @PathVariable Long teamId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        List<TeamMemberEvaluationDTO> evaluationStatus = evaluationService.getEvaluationStatusOfTeamMembers(userId, teamId);
+        List<TeamMemberEvaluationDTO> evaluationStatus = evaluationService.getEvaluationStatusOfTeamMembers(userDetails.getId(), teamId);
         return ResponseEntity.ok(evaluationStatus);
     }
 
