@@ -34,6 +34,7 @@ public class TeamService {
 
     private final TeamMapper teamMapper;
     private final UserMapper userMapper;
+
     @Transactional
     public TeamResponseDTO createTeam(Long leaderId, CreateTeamRequest request) {
         User leader = userRepository.findById(leaderId)
@@ -107,13 +108,12 @@ public class TeamService {
         boolean hasTeamInThisSubject = user.getTeams().stream()
             .anyMatch(t -> t.getSubject().equals(team.getSubject()));
 
-
-
-        if(hasPendingRequest){
-            throw new IllegalStateException("User already has a pending join request in this subject");
+        if (hasPendingRequest) {
+            throw new IllegalStateException(
+	"User already has a pending join request in this subject");
         }
 
-        if(hasTeamInThisSubject){
+        if (hasTeamInThisSubject) {
             throw new IllegalStateException("User already is a member of a team in this subject");
         }
 
@@ -186,12 +186,12 @@ public class TeamService {
 
     public List<TeamResponseDTO> findCompletedTeam(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         return user.getTeams().stream()
-                .filter(team->team.getCompleteStatus() == CompleteStatus.COMPLETE)
-                .map(teamMapper::ToTeamResponseDTO)
-                .collect(Collectors.toList());
+            .filter(team -> team.getCompleteStatus() == CompleteStatus.COMPLETE)
+            .map(teamMapper::ToTeamResponseDTO)
+            .collect(Collectors.toList());
 
     }
 

@@ -14,14 +14,10 @@ import com.example.bilda_server.response.ResponseDto;
 import com.example.bilda_server.response.SignupResponse;
 import com.example.bilda_server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,4 +67,9 @@ public class UserController {
             userService.changeNickname(changeNicknameRequest, userDetails));
     }
 
+    @Operation(summary = "약관 호출", description = "호출 시 약관이 반환됩니다.", tags = {"UserController"})
+    @GetMapping("/terms")
+    public ResponseDto<String> getTerms() {
+        return ResponseDto.success("약관 반환 완료", userService.getTerms());
+    }
 }

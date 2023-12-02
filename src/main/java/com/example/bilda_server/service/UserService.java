@@ -3,9 +3,11 @@ package com.example.bilda_server.service;
 import static com.example.bilda_server.utils.ExceptionMessage.*;
 
 import com.example.bilda_server.auth.CustomUserDetails;
+import com.example.bilda_server.domain.entity.Term;
 import com.example.bilda_server.domain.entity.Tokens;
 import com.example.bilda_server.domain.entity.User;
 import com.example.bilda_server.jwt.JwtTokenManager;
+import com.example.bilda_server.repository.TermRepository;
 import com.example.bilda_server.repository.UserJpaRepository;
 import com.example.bilda_server.request.ChangeNicknameRequest;
 import com.example.bilda_server.request.ChangePasswordRequest;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserJpaRepository userRepository;
+    private final TermRepository termRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenManager jwtTokenManager;
 
@@ -72,6 +75,10 @@ public class UserService {
 
         target.changeNickname(changeNicknameRequest);
         return new ChangeNicknameResponse(target.getNickname());
+    }
 
+    public String getTerms() {
+        Term term = termRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException());
+        return term.getContent();
     }
 }
