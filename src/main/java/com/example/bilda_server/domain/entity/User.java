@@ -85,8 +85,8 @@ public class User {
                 .build();
     }
 
-    public void changePassword(ChangePasswordRequest changePasswordRequest) {
-        this.password = changePasswordRequest.password();
+    public void changePassword(ChangePasswordRequest changePasswordRequest, PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(changePasswordRequest.password());
     }
 
     public void changeNickname(ChangeNicknameRequest changeNicknameRequest) {

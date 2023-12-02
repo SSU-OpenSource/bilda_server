@@ -64,7 +64,7 @@ public class UserService {
         User target = userRepository.findById(userDetails.getId())
             .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
 
-        target.changePassword(changePasswordRequest);
+        target.changePassword(changePasswordRequest, passwordEncoder);
         return new ChangePasswordResponse(target.getPassword());
     }
 
@@ -92,7 +92,8 @@ public class UserService {
         User findUser = userRepository.findById(userDetails.getId())
             .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
 
-        return new SignInResponse(findUser.getName(), findUser.getEmail(), findUser.getStudentId(),
+        return new SignInResponse(findUser.getName(), findUser.getNickname(),
+            findUser.getStudentId(),
             findUser.getDepartment());
     }
 }

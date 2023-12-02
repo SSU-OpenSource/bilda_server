@@ -1,6 +1,7 @@
 package com.example.bilda_server.exception;
 
 import com.example.bilda_server.response.ResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +14,8 @@ public class GlobalExceptionHandler {
         IllegalArgumentException.class,
         RuntimeException.class,
         IllegalStateException.class,
-        IOException.class
+        IOException.class,
+        EntityNotFoundException.class
     })
     public ResponseDto<?> handler(Exception e) {
         return ResponseDto.fail(HttpStatus.BAD_REQUEST, e.getMessage());
