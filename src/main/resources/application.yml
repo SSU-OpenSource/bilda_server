@@ -2,10 +2,10 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-#    password: Rjsn937129!
-#    url: jdbc:mysql://localhost:3306/bilda
-    password: ssu102938!
-    url: jdbc:mysql://db-villian-die.cu19a3s0hesm.ap-northeast-2.rds.amazonaws.com:3306/vilda
+    password: Rjsn937129!
+    url: jdbc:mysql://localhost:3306/bilda
+#    password: ssu102938!
+#    url: jdbc:mysql://db-villian-die.cu19a3s0hesm.ap-northeast-2.rds.amazonaws.com:3306/vilda
 
   jpa:
     hibernate:

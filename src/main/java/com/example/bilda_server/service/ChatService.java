@@ -19,13 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ChatService {
+
     private final OpenAiService openAiService;
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
     @Transactional
-    public GptCompletionChatResponse completionChat(GptCompletionChatRequest gptCompletionChatRequest) {
+    public GptCompletionChatResponse completionChat(
+        GptCompletionChatRequest gptCompletionChatRequest) {
         ChatCompletionResult chatCompletion = openAiService.createChatCompletion(
             GptCompletionChatRequest.of(gptCompletionChatRequest));
 
