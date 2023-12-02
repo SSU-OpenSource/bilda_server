@@ -32,7 +32,9 @@ public class SecurityConfig {
 
     private final String[] allowedUrls = {"/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**",
         "/swagger-resources/**", "/webjars/**", RequestURI.USER_REQUEST_PREFIX + "/signup",
-        RequestURI.USER_REQUEST_PREFIX + "/signin", RequestURI.EMAIL_REQUEST_PREFIX + "/verify/**"};
+        RequestURI.USER_REQUEST_PREFIX + "/signin", RequestURI.EMAIL_REQUEST_PREFIX + "/verify/**",
+        RequestURI.USER_REQUEST_PREFIX + "/servicePolicy",
+        RequestURI.USER_REQUEST_PREFIX + "/privacyPolicy"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -16,6 +16,7 @@ import com.example.bilda_server.response.ChangeNicknameResponse;
 import com.example.bilda_server.response.ChangePasswordResponse;
 import com.example.bilda_server.request.SignInRequest;
 import com.example.bilda_server.response.AuthorizedResponse;
+import com.example.bilda_server.response.SignInResponse;
 import com.example.bilda_server.response.SignupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -77,8 +78,21 @@ public class UserService {
         return new ChangeNicknameResponse(target.getNickname());
     }
 
-    public String getTerms() {
+    public String getPrivacyPolicy() {
         Term term = termRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException());
         return term.getContent();
+    }
+
+    public String getServicePolicy() {
+        Term term = termRepository.findById(2L).orElseThrow(() -> new IllegalArgumentException());
+        return term.getContent();
+    }
+
+    public SignInResponse home(CustomUserDetails userDetails) {
+        User findUser = userRepository.findById(userDetails.getId())
+            .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND_BY_EMAIL));
+
+        return new SignInResponse(findUser.getName(), findUser.getEmail(), findUser.getStudentId(),
+            findUser.getDepartment());
     }
 }

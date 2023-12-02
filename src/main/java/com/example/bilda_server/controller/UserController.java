@@ -11,6 +11,7 @@ import com.example.bilda_server.response.ChangeNicknameResponse;
 import com.example.bilda_server.response.ChangePasswordResponse;
 import com.example.bilda_server.response.AuthorizedResponse;
 import com.example.bilda_server.response.ResponseDto;
+import com.example.bilda_server.response.SignInResponse;
 import com.example.bilda_server.response.SignupResponse;
 import com.example.bilda_server.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,9 +68,25 @@ public class UserController {
             userService.changeNickname(changeNicknameRequest, userDetails));
     }
 
-    @Operation(summary = "약관 호출", description = "호출 시 약관이 반환됩니다.", tags = {"UserController"})
-    @GetMapping("/terms")
-    public ResponseDto<String> getTerms() {
-        return ResponseDto.success("약관 반환 완료", userService.getTerms());
+    @Operation(summary = "개인 정보 처리 방침", description = "호출 시 개인 정보 처리 방침이 반환됩니다.", tags = {
+        "UserController"})
+    @GetMapping("/privacyPolicy")
+    public ResponseDto<String> privacyPolicy() {
+        return ResponseDto.success("개인 정보 처리 방침 반환 완료", userService.getPrivacyPolicy());
+    }
+
+    @Operation(summary = "서비스 이용 약관", description = "호출 시 서비스 이용 약관 반환됩니다.", tags = {
+        "UserController"})
+    @GetMapping("/servicePolicy")
+    public ResponseDto<String> servicePolicy() {
+        return ResponseDto.success("서비스 이용 약관 반환 완료", userService.getServicePolicy());
+    }
+
+    @Operation(summary = "홈 화면", description = "호출 시 로그인 한 유저의 정보가 반환됩니다.", tags = {
+        "UserController"})
+    @GetMapping("/home")
+    public ResponseDto<SignInResponse> home(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseDto.success("홈 화면 반환 완료", userService.home(userDetails));
     }
 }
