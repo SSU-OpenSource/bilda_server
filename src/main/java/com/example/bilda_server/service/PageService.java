@@ -27,7 +27,7 @@ public class PageService {
                 .map(item -> new ScoreItemDTO(item.getDescription(), page.getAverageScore(item), page.getHighScoreCount(item)))
                 .toList();
 
-        return new PageAverageDTO(user.getId(), user.getName(), scoreItems);
+        return new PageAverageDTO(user.getId(), user.getName(), user.getNickname(), scoreItems);
     }
 
 }

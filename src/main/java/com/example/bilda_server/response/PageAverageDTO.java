@@ -12,5 +12,6 @@ import java.util.List;
 public class PageAverageDTO {
     private Long userId;
     private String userName;
+    private String nickName;
     private List<ScoreItemDTO> scoreItems;
 }
