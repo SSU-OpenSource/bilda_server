@@ -12,6 +12,7 @@ public class UserMapper {
         return new PendingUserDTO(
                 user.getId(),
                 user.getName(),
+                user.getNickname(),
                 user.getDepartment()
         );
     }

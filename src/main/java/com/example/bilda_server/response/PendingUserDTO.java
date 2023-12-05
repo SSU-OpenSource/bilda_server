@@ -9,5 +9,6 @@ import lombok.Getter;
 public class PendingUserDTO {
     private Long userId;
     private String userName;
+    private String nickName;
     private Department department;
 }
