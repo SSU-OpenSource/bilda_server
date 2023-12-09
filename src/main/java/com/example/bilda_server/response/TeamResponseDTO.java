@@ -20,5 +20,7 @@ public class TeamResponseDTO {
     private RecruitmentStatus recruitmentStatus;
     private CompleteStatus completeStatus;
     private LocalDate buildStartDate;
+    private String teamInfoMessage;
+    private int maxNumber;
     private List<UserResponseDTO> members;
 }

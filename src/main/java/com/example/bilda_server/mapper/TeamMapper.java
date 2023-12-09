@@ -14,19 +14,21 @@ public class TeamMapper {
     public TeamResponseDTO ToTeamResponseDTO(Team team) {
 
         List<UserResponseDTO> memberDTOs = team.getUsers().stream()
-                .map(user -> new UserResponseDTO(user.getId(), user.getName(), user.getNickname()))
-                .toList();
+            .map(user -> new UserResponseDTO(user.getId(), user.getName(), user.getNickname()))
+            .toList();
 
         return new TeamResponseDTO(
-                team.getTeamId(),
-                team.getLeader().getId(),
-                team.getTeamTitle(),
-                team.getSubject().getTitle(),
-                team.getLeader().getName(),
-                team.getRecruitmentStatus(),
-                team.getCompleteStatus(),
-                team.getBuildStartDate(),
-                memberDTOs
+            team.getTeamId(),
+            team.getLeader().getId(),
+            team.getTeamTitle(),
+            team.getSubject().getTitle(),
+            team.getLeader().getName(),
+            team.getRecruitmentStatus(),
+            team.getCompleteStatus(),
+            team.getBuildStartDate(),
+            team.getTeamInfoMessage(),
+            team.getMaxMemberNum(),
+            memberDTOs
         );
     }
 
@@ -34,12 +36,12 @@ public class TeamMapper {
     public TeamsOfSubjectDTO ToTeamsOfSubjectDTO(Team team) {
 
         return new TeamsOfSubjectDTO(
-                team.getTeamId(),
-                team.getTeamTitle(),
-                team.getSubject().getTitle(),
-                team.getRecruitmentStatus(),
-                team.getUsers().size(),
-                team.getMaxMemberNum()
+            team.getTeamId(),
+            team.getTeamTitle(),
+            team.getSubject().getTitle(),
+            team.getRecruitmentStatus(),
+            team.getUsers().size(),
+            team.getMaxMemberNum()
         );
     }
 }
