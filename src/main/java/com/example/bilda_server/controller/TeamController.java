@@ -150,11 +150,11 @@ public class TeamController {
     @Operation(summary = "팀플 종료하기", description = "TeamId를 pathVariable로 넘기면 팀의 completeStatus는 COMPLETE로 바뀌게 됩니다. ", tags = {
         "TeamController"})
     @PostMapping("/complete/{teamId}")
-    public ResponseDto<Void> completeTeam(
+    public ResponseEntity<BaseResponse<Void>> completeTeam(
         @PathVariable Long teamId
     ) {
         teamService.setCompleteStatus(teamId);
-        return ResponseDto.success();
+        return ResponseEntity.ok(new BaseResponse<>(200, "팀 complete_status 종료 설정 완료", null));
 
     }
 
